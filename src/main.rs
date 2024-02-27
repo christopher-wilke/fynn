@@ -2,18 +2,24 @@ struct NeuronsLayer {
     inputs: [f64; 4],
     weights: [[f64; 4]; 3],
     bias: [f64; 3],
+    output: Vec<f64>,
 }
 
 impl NeuronsLayer {
     pub fn forward(&mut self) {
         let mut value = 0.;
-        for neuron in self.weights {
-            let n_val = 0.;
-            for (idx, val) in neuron.iter().enumerate() {
-                println!("{}, {}", idx, val);
+        for (i, bias) in self.bias.iter().enumerate() {
+            let mut n_val = 0.;
+            for (j, input) in self.inputs.iter().enumerate() {
+                n_val += input * self.weights[i][j];
             }
-            println!("---");
+            n_val += bias;
+            self.output.push(n_val);
         }
+    }
+
+    pub fn get_output(&self) -> &Vec<f64> {
+        &self.output
     }
 }
 
@@ -25,7 +31,9 @@ fn main() {
             [0.5, -0.91, 0.26, -0.5],
             [-0.26, -0.27, 0.17, 0.87],
         ],
-        bias: [1.0, 2.0, 0.4],
+        bias: [2.0, 3.0, 0.5],
+        output: vec![],
     };
     layer.forward();
+    println!("{:?}", layer.get_output());
 }
