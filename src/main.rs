@@ -38,9 +38,9 @@ fn main() {
     // layer.forward();
     // println!("{:?}", layer.get_output());
 
-    let a = [1, 2, 3];
-    let b = [2, 3, 4];
+    let a = [1.0, 2.0, 3.0, 2.5];
+    let b = [0.2, 0.8, -0.5, 1.0];
 
-    let dp = helpers::dot_product(&a, &b);
+    let dp = helpers::dot_product(&a, &b, 2.);
     println!("{dp:?}");
 }
