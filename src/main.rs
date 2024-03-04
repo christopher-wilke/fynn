@@ -1,3 +1,5 @@
+mod helpers;
+
 struct NeuronsLayer {
     inputs: [f64; 4],
     weights: [[f64; 4]; 3],
@@ -7,7 +9,6 @@ struct NeuronsLayer {
 
 impl NeuronsLayer {
     pub fn forward(&mut self) {
-        let mut value = 0.;
         for (i, bias) in self.bias.iter().enumerate() {
             let mut n_val = 0.;
             for (j, input) in self.inputs.iter().enumerate() {
@@ -24,16 +25,22 @@ impl NeuronsLayer {
 }
 
 fn main() {
-    let mut layer = NeuronsLayer {
-        inputs: [1., 2., 3., 2.5],
-        weights: [
-            [0.2, 0.8, -0.5, 1.0],
-            [0.5, -0.91, 0.26, -0.5],
-            [-0.26, -0.27, 0.17, 0.87],
-        ],
-        bias: [2.0, 3.0, 0.5],
-        output: vec![],
-    };
-    layer.forward();
-    println!("{:?}", layer.get_output());
+    // let mut layer = NeuronsLayer {
+    //     inputs: [1., 2., 3., 2.5],
+    //     weights: [
+    //         [0.2, 0.8, -0.5, 1.0],
+    //         [0.5, -0.91, 0.26, -0.5],
+    //         [-0.26, -0.27, 0.17, 0.87],
+    //     ],
+    //     bias: [2.0, 3.0, 0.5],
+    //     output: vec![],
+    // };
+    // layer.forward();
+    // println!("{:?}", layer.get_output());
+
+    let a = [1, 2, 3];
+    let b = [2, 3, 4];
+
+    let dp = helpers::dot_product(&a, &b);
+    println!("{dp:?}");
 }
