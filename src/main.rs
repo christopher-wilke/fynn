@@ -38,9 +38,15 @@ fn main() {
     // layer.forward();
     // println!("{:?}", layer.get_output());
 
-    let a = [1.0, 2.0, 3.0, 2.5];
-    let b = [0.2, 0.8, -0.5, 1.0];
+    let a = [1.0, 2.0, 3.0, 2.5].to_vec();
+    let b = [
+        [0.2, 0.8, -0.5, 1.0].to_vec(),
+        [0.5, -0.91, 0.26, -0.5].to_vec(),
+        [-0.26, -0.27, 0.17, 0.87].to_vec(),
+    ]
+    .to_vec();
+    let bias = [2.0, 3.0, 0.5].to_vec();
 
-    let dp = helpers::dot_product(&a, &b, 2.);
+    let dp = helpers::dot_product(&a, &b, &bias);
     println!("{dp:?}");
 }
