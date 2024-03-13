@@ -1,7 +1,7 @@
 use std::{fmt::Debug, usize};
 
 pub struct FynnArray {
-    inner: Vec<Vec<f64>>,
+    matrix: Vec<Vec<f64>>,
 }
 
 impl FynnArray {
@@ -16,22 +16,24 @@ impl FynnArray {
             }
             out.push(current);
         }
-        Self { inner: out }
+        Self { matrix: out }
     }
 
-    pub fn transpose(&mut self) {
-        if self.inner.len() > 0 {
-            (0..self.inner[0].len())
-                .map(|i| self.inner.iter().map(|inn|inn[i].clone()).collect::Vec<f64>())
-                .collect();
-        }
+    pub fn transpose(mut self) -> Self  {
+        assert!(!self.matrix.is_empty());
+        let num_cols = self.matrix.first().unwrap().len();
+        let mut row_iters: Vec<_> = self.matrix.into_iter().map(Vec::into_iter).collect();
+        self.matrix = (0..num_cols)
+            .map(|_| row_iters.iter_mut().map(|it| it.next().unwrap()).collect())
+            .collect();
+        self
     }
 }
 
 impl Debug for FynnArray {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut out = String::new();
-        for val in &self.inner {
+        for val in &self.matrix {
             out.push_str(format!("{:?}\n", val).as_str());
         }
         write!(f, "{}", out)
