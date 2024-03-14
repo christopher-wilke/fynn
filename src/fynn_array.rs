@@ -1,7 +1,7 @@
 use std::{fmt::Debug, usize};
 
 pub struct FynnArray {
-    matrix: Vec<Vec<f64>>,
+    pub matrix: Vec<Vec<f64>>,
 }
 
 impl FynnArray {
@@ -19,6 +19,11 @@ impl FynnArray {
         Self { matrix: out }
     }
 
+    // Returns 2d-dimensions in (width, height)
+    pub fn get_dim(&self) -> (usize, usize) {
+        (*(&self.matrix[0].len()), *(&self.matrix.len()))
+    }
+
     pub fn transpose(mut self) -> Self  {
         assert!(!self.matrix.is_empty());
         let num_cols = self.matrix.first().unwrap().len();
@@ -28,6 +33,7 @@ impl FynnArray {
             .collect();
         self
     }
+
 }
 
 impl Debug for FynnArray {

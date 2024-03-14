@@ -1,3 +1,5 @@
+use crate::fynn_array::FynnArray;
+
 pub struct NeuronsLayer {
     pub inputs: [f64; 4],
     pub weights: [[f64; 4]; 3],

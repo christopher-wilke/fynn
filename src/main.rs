@@ -1,19 +1,25 @@
 mod fynn_array;
-mod neurons_layer;
+mod helpers;
 
 use fynn_array::FynnArray;
-use neurons_layer::NeuronsLayer;
 
 pub fn main() {
 
-    let test_array = FynnArray::new(&[
-        [0, 1, 2, 3, 4],
-        [5, 6, 7, 8, 9],
-        [10, 11, 12, 13, 14],
-        [15, 16, 17, 18, 19]
+    let inputs = FynnArray::new(&[
+        [1.0, 2.0, 3.0, 2.5],
+        [2.0, 5.0, -1.0, 2.0],
+        [-1.5, 2.7, 3.3, -0.8],
     ]);
 
-    println!("{:?}", test_array.transpose());
+    let weights = FynnArray::new(&[
+        [0.2, 0.8, -0.5, 1.0],
+        [0.5, -0.91, 0.26, -0.5],
+        [-0.26, -0.27, 0.17, 0.87]
+    ]).transpose();
+
+    helpers::dot(&inputs, &weights);
+
+    // println!("{:?}", test_array.transpose());
  
     // let inputs = [1., 2., 3., 2.5];
     // let weights = [
