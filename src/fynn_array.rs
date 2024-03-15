@@ -4,11 +4,20 @@ pub struct FynnArray {
     pub matrix: Vec<Vec<f64>>,
 }
 
-impl FynnArray {
-    // Forcing to use 2-d arrays
-    pub fn new<T: Into<f64> + Copy, const N: usize>(arr: &[[T; N]]) -> Self {
+pub trait FynnBehavior {
+    fn to_fynn_array(self) -> FynnArray;
+}
+
+impl FynnBehavior for Vec<Vec<f64>> {
+    fn to_fynn_array(self) -> FynnArray {
+        FynnArray { matrix: Vec::from(self) }
+    }
+}
+
+impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
+    fn to_fynn_array(self) -> FynnArray {
         let mut out = vec![];
-        for row in arr {
+        for row in self {
             let mut current = vec![];
             for item in row {
                 let val: f64 = (*item).into();
@@ -16,8 +25,11 @@ impl FynnArray {
             }
             out.push(current);
         }
-        Self { matrix: out }
+        FynnArray { matrix: out }
     }
+}
+
+impl FynnArray {
 
     // Returns 2d-dimensions in (width, height)
     pub fn get_dim(&self) -> (usize, usize) {
