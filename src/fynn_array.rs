@@ -14,6 +14,7 @@ impl FynnBehavior for Vec<Vec<f64>> {
     }
 }
 
+// 2-d
 impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
     fn to_fynn_array(self) -> FynnArray {
         let mut out = vec![];
@@ -46,6 +47,28 @@ impl FynnArray {
         self
     }
 
+}
+
+// Overlading for `FynnArray`
+impl std::ops::Add<&[f64]> for FynnArray {
+    type Output = FynnArray;
+
+    fn add(self, rhs: &[f64]) -> Self::Output {
+        
+        let mut matrix = vec![];
+
+        for row in self.matrix {
+            let mut new_row = vec![];
+            for (idx, val) in row.iter().enumerate() {
+                new_row.push(val + rhs[idx]);
+            }
+            matrix.push(new_row);
+        }
+        
+        FynnArray {
+            matrix
+        }
+    }
 }
 
 impl Debug for FynnArray {

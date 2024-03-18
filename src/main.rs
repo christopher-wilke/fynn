@@ -9,7 +9,8 @@ pub fn main() {
         [1.0, 2.0, 3.0, 2.5],
         [2.0, 5.0, -1.0, 2.0],
         [-1.5, 2.7, 3.3, -0.8],
-    ].to_fynn_array();
+    ]
+    .to_fynn_array();
 
     let weights = [
         [0.2, 0.8, -0.5, 1.0],
@@ -19,7 +20,10 @@ pub fn main() {
     .to_fynn_array()
     .transpose();
 
+    let bias = [2.0, 3.0, 0.5];
     let out = helpers::dot(&inputs, &weights);
-    println!("{out:?}");
+    let o_add_op = out + &bias;
+
+    println!("{o_add_op:?}");
 
 }

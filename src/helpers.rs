@@ -1,12 +1,9 @@
 use crate::{FynnArray, FynnBehavior};
 
 pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
-
-    // we are using `Vec` as we dont know the size of the 2-d Array
-    let mut out: Vec<Vec<f64>> = Vec::new();
-
-    // Making sure that Vector is parsable
     assert!(inputs.get_dim().0 == weights.get_dim().1);
+    
+    let mut out: Vec<Vec<f64>> = Vec::new();
 
     for (i, _) in (&inputs).matrix.iter().enumerate() {
         let mut current_col_weights = 0;
