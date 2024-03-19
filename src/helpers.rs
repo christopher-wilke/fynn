@@ -14,7 +14,8 @@ pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
                 out += val*&weights.matrix[k][current_col_weights];
             }
             // Is there a better way to round instead parsing?
-            dotted.push(format!("{:.3}", out).parse().unwrap());
+            let val: f64 = format!("{:.5}", out).parse().unwrap();
+            dotted.push(val);
             current_col_weights += 1; 
         }
         out.push(dotted);

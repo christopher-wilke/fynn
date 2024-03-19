@@ -54,13 +54,12 @@ impl std::ops::Add<&[f64]> for FynnArray {
     type Output = FynnArray;
 
     fn add(self, rhs: &[f64]) -> Self::Output {
-        
         let mut matrix = vec![];
-
         for row in self.matrix {
             let mut new_row = vec![];
             for (idx, val) in row.iter().enumerate() {
-                new_row.push(val + rhs[idx]);
+                let value: f64 = format!("{:.5}", val + rhs[idx]).parse().unwrap();
+                new_row.push(value);
             }
             matrix.push(new_row);
         }
