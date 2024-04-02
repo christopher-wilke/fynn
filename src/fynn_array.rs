@@ -1,5 +1,8 @@
 use std::{fmt::Debug, usize};
 
+use rand::prelude::*;
+use rand_distr::StandardNormal;
+
 pub struct FynnArray {
     pub matrix: Vec<Vec<f64>>,
 }
@@ -32,6 +35,20 @@ impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
 
 impl FynnArray {
 
+    pub fn randn(h: usize, w: usize) {
+        println!("calling randn");
+        let mut matrix: Vec<Vec<f64>> = vec![];
+        for i in 0..h {
+            let mut row = vec![];
+            for j in 0..w {
+                let val: f64 = thread_rng().sample(StandardNormal);
+                row.push(val);
+            }
+            matrix.push(row);
+        }
+        println!("{:?}", matrix);
+    }
+    
     // Returns 2d-dimensions in (width, height)
     pub fn get_dim(&self) -> (usize, usize) {
         (*(&self.matrix[0].len()), *(&self.matrix.len()))

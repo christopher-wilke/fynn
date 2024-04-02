@@ -4,13 +4,22 @@ mod importer;
 
 use fynn_array::*;
 use importer::*;
+use rand::prelude::*;
+use rand_distr::StandardNormal;
 
 static INPUT: &str = "py/out.txt";
 
 pub fn main() {
 
-    let data = Importer::from(INPUT);
-    println!("{:?}", data.get_data());
+    FynnArray::randn(2, 5);
+    // for _ in 0..100 {
+    //     let val: f64 = thread_rng().sample(StandardNormal);
+    //     println!("{val}!");
+    // }
+    
+
+    // let data = Importer::from(INPUT);
+    // println!("{:?}", data.get_data());
 
     // let inputs = [
     //     [1.0, 2.0, 3.0, 2.5],
