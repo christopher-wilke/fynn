@@ -10,4 +10,5 @@ X, y = spiral_data(samples=10, classes=3)
 np.savetxt('out.txt', X)
 
 # we will use the binary for creating a graph
-np.save("outfile", X)
+np.save("outfile_x", X)
+np.save("outfile_y", y)

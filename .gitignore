@@ -2,3 +2,6 @@
 
 *out.txt
 *.npy
+
+#OS-X
+*.DS_Store
