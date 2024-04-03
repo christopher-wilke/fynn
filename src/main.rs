@@ -1,9 +1,11 @@
 mod fynn_array;
 mod helpers;
 mod importer;
+mod layer_dense;
 
 use fynn_array::*;
 use importer::*;
+use layer_dense::LayerDense;
 use rand::prelude::*;
 use rand_distr::StandardNormal;
 
@@ -11,15 +13,9 @@ static INPUT: &str = "py/out.txt";
 
 pub fn main() {
 
-    FynnArray::randn(2, 5);
-    // for _ in 0..100 {
-    //     let val: f64 = thread_rng().sample(StandardNormal);
-    //     println!("{val}!");
-    // }
-    
+    LayerDense::new();
 
-    // let data = Importer::from(INPUT);
-    // println!("{:?}", data.get_data());
+    // FynnArray::randn(2, 5);
 
     // let inputs = [
     //     [1.0, 2.0, 3.0, 2.5],
