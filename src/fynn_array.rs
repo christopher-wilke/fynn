@@ -35,8 +35,7 @@ impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
 
 impl FynnArray {
 
-    pub fn randn(h: usize, w: usize) {
-        println!("calling randn");
+    pub fn randn(h: usize, w: usize) -> Self {
         let mut matrix: Vec<Vec<f64>> = vec![];
         for i in 0..h {
             let mut row = vec![];
@@ -46,7 +45,7 @@ impl FynnArray {
             }
             matrix.push(row);
         }
-        println!("{:?}", matrix);
+        Self { matrix }
     }
     
     // Returns 2d-dimensions in (width, height)
@@ -66,7 +65,34 @@ impl FynnArray {
 
 }
 
-// Overlading for `FynnArray`
+// Math Overloads for `FynnArray`
+impl std::ops::Mul<FynnArray> for f64 {
+    type Output = FynnArray;
+
+    fn mul(self, rhs: FynnArray) -> Self::Output {
+        // let mut transformed = vec![vec![]];
+        for i in rhs.matrix.iter() {
+            for val in i {
+                println!("0.01*{}={}", val, 0.01*val);
+            }
+        }
+        // println!("self: {}", self);
+        // println!("rhs: {:?}", rhs);
+       
+        FynnArray::randn(2,3)
+    }
+}
+
+// impl std::ops::Mul<f64> for FynnArray {
+//     type Output = Self;
+
+//     fn mul(self, rhs: f64) -> Self::Output {
+//         println!("mul_self={:?}", self);
+//         FynnArray::randn(2, 3)
+//     }
+    
+// }
+
 impl std::ops::Add<&[f64]> for FynnArray {
     type Output = FynnArray;
 
