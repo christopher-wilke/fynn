@@ -35,6 +35,18 @@ impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
 
 impl FynnArray {
 
+    pub fn zeros(h: usize, w: usize) -> Self {
+        let mut matrix = vec![];
+        for i in 0..h {
+            let mut row = vec![];
+            for j in 0..w {
+                row.push(0.);
+            }
+            matrix.push(row)
+        }
+        Self { matrix }
+    }
+
     pub fn randn(h: usize, w: usize) -> Self {
         let mut matrix: Vec<Vec<f64>> = vec![];
         for i in 0..h {
@@ -70,28 +82,28 @@ impl std::ops::Mul<FynnArray> for f64 {
     type Output = FynnArray;
 
     fn mul(self, rhs: FynnArray) -> Self::Output {
-        // let mut transformed = vec![vec![]];
-        for i in rhs.matrix.iter() {
-            for val in i {
-                println!("0.01*{}={}", val, 0.01*val);
-            }
-        }
-        // println!("self: {}", self);
-        // println!("rhs: {:?}", rhs);
-       
-        FynnArray::randn(2,3)
+        rhs.matrix
+            .iter()
+            .map(|i| i.iter().map(|&val| 0.01 * val).collect())
+            .collect::<Vec<Vec<f64>>>()
+            .to_fynn_array()
+        // rhs.matrix
+        //     .iter()
+        //     .map(|i| i.iter().map(|val| 0.01*val).collect())
+        //     .collect::<Vec<Vec<_>>()
+        //     .to_fynn_array()
+        // let mut transformed = vec![];
+        // for i in rhs.matrix.iter() {
+        //     let mut row = vec![];
+        //     for val in i {
+        //         row.push(0.01*val);
+        //     }
+        //     transformed.push(row)
+        // }
+        // transformed.to_fynn_array()
+        // FynnArray {matrix: vec![] }
     }
 }
-
-// impl std::ops::Mul<f64> for FynnArray {
-//     type Output = Self;
-
-//     fn mul(self, rhs: f64) -> Self::Output {
-//         println!("mul_self={:?}", self);
-//         FynnArray::randn(2, 3)
-//     }
-    
-// }
 
 impl std::ops::Add<&[f64]> for FynnArray {
     type Output = FynnArray;

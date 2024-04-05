@@ -6,14 +6,13 @@ mod layer_dense;
 use fynn_array::*;
 use importer::*;
 use layer_dense::LayerDense;
-use rand::prelude::*;
-use rand_distr::StandardNormal;
 
 static INPUT: &str = "py/out.txt";
 
 pub fn main() {
 
-    LayerDense::new();
+    let layer = LayerDense::new();
+    layer.fwd();
 
     // FynnArray::randn(2, 5);
 
