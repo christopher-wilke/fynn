@@ -11,10 +11,28 @@ static INPUT: &str = "py/out.txt";
 
 pub fn main() {
 
-    let layer = LayerDense::new();
-    layer.fwd();
+    let inputs = [
+        [1.0, 2.0, 3.0, 19.],
+        [4.0, 5.0, 6.0, 20.],
+        [7.0, 8.0, 9.0, 21.],
+        [10., 14., 16., 22.]
+    ]
+    .to_fynn_array();
 
-    // FynnArray::randn(2, 5);
+    let weights = [
+        [6., 3.],
+        [5., 2.],
+        [4., 1.],
+        [9., 4.]
+    ]
+    .to_fynn_array();
+
+    let layer1_outputs = helpers::dot(&inputs, &weights); 
+    println!("From FynnArray: {:?}", layer1_outputs);
+    // let layer = LayerDense::new();
+    // let output = layer.fwd(&inputs);
+
+    // println!("out = {:?}", output);
 
     // let inputs = [
     //     [1.0, 2.0, 3.0, 2.5],

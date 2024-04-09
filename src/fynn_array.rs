@@ -60,9 +60,12 @@ impl FynnArray {
         Self { matrix }
     }
     
-    // Returns 2d-dimensions in (width, height)
+    /// Returns 2d-dimensions in (width, height)
     pub fn get_dim(&self) -> (usize, usize) {
-        (*(&self.matrix[0].len()), *(&self.matrix.len()))
+        (
+            *(&self.matrix[0].len()), 
+            *(&self.matrix.len())
+        )
     }
 
     pub fn transpose(mut self) -> Self  {
@@ -87,21 +90,6 @@ impl std::ops::Mul<FynnArray> for f64 {
             .map(|i| i.iter().map(|&val| 0.01 * val).collect())
             .collect::<Vec<Vec<f64>>>()
             .to_fynn_array()
-        // rhs.matrix
-        //     .iter()
-        //     .map(|i| i.iter().map(|val| 0.01*val).collect())
-        //     .collect::<Vec<Vec<_>>()
-        //     .to_fynn_array()
-        // let mut transformed = vec![];
-        // for i in rhs.matrix.iter() {
-        //     let mut row = vec![];
-        //     for val in i {
-        //         row.push(0.01*val);
-        //     }
-        //     transformed.push(row)
-        // }
-        // transformed.to_fynn_array()
-        // FynnArray {matrix: vec![] }
     }
 }
 

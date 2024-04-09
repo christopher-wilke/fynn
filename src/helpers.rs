@@ -2,24 +2,27 @@ use crate::{FynnArray, FynnBehavior};
 
 pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
     assert!(inputs.get_dim().0 == weights.get_dim().1);
-    
-    let mut out: Vec<Vec<f64>> = Vec::new();
 
-    for (i, _) in (&inputs).matrix.iter().enumerate() {
-        let mut current_col_weights = 0;
-        let mut dotted = vec![];
-        for _ in 0..inputs.get_dim().1 {
-            let mut out = 0.;
-            for (k, val) in (&inputs).matrix[i].iter().enumerate() {
-                out += val*&weights.matrix[k][current_col_weights];
+    let w = *(&weights.get_dim().0) as u32;
+    let h = *(&inputs.get_dim().1) as u32;
+    let mut out = vec![];
+
+    for i in 0..h {
+        let mut row = vec![];
+        let mut weight_row_idx = 0;
+        for _ in 0..w {
+            let mut weight_col_idx: usize = 0;
+            let mut res = 0.;
+            for (_, val) in (&inputs).matrix[i as usize].iter().enumerate() {
+                let result = val*(&weights).matrix[weight_col_idx][weight_row_idx];
+                res += result;
+                weight_col_idx += 1;    
             }
-            // Is there a better way to round instead parsing?
-            let val: f64 = format!("{:.5}", out).parse().unwrap();
-            dotted.push(val);
-            current_col_weights += 1; 
+            weight_row_idx += 1;
+            row.push(res);
         }
-        out.push(dotted);
+        out.push(row);
     }
-    out.to_fynn_array() 
+    out.to_fynn_array()
 }
 
