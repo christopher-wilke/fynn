@@ -1,7 +1,14 @@
-use std::{fs::File, io::{self, BufRead}};
+use std::{convert, fs::File, io::{self, BufRead}};
 
+#[derive(Debug, Clone)]
+pub struct Point {
+    X: f64,
+    Y: f64
+}
+
+#[derive(Clone)]
 pub struct Importer {
-    v: Vec<f64>
+    v: Vec<Point>
 }
 
 impl Importer {
@@ -12,15 +19,33 @@ impl Importer {
 
         for line in reader.flatten() {
             for v in line.split_whitespace() {
-                let val = v.parse::<f64>().expect("could not parse value");
+                let val: f64 = v.parse().expect("could not parse value");
                 resp.push(val);
             }   
         }
-
-        Self { v: resp }
+        
+        Self { v: Self::converter(resp) }
     }
 
-    pub fn get_data(&self) -> &Vec<f64> {
+    fn converter(values: Vec<f64>) -> Vec<Point> {
+        let mut v: Vec<Point> = vec![];
+        for chunk in values.chunks(2) {
+            if let [first, second] = chunk {
+                v.push(Point{ X: *first, Y: *second });
+            }
+        }
+        v
+    }
+
+    pub fn get_points(&self) -> &Vec<Point> {
         &self.v
+    }
+
+    pub fn get_x(&self) -> Vec<f64> {
+        self.clone()
+            .v
+            .iter()
+            .map(|v| v.X)
+            .collect()
     }
 }

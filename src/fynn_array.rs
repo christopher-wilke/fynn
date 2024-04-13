@@ -17,6 +17,16 @@ impl FynnBehavior for Vec<Vec<f64>> {
     }
 }
 
+impl FynnBehavior for Vec<f64> {
+    fn to_fynn_array(self) -> FynnArray {
+        let mut out = vec![];
+        for v in self {
+            out.push(vec![v]);
+        }
+        FynnArray { matrix: out }
+    }
+}
+
 // 2-d
 impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
     fn to_fynn_array(self) -> FynnArray {
