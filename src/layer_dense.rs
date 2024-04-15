@@ -1,6 +1,7 @@
 use crate::{helpers, FynnArray};
 use crate::FynnBehavior;
 
+#[derive(Debug)]
 pub struct LayerDense {
     pub weights: FynnArray,
     pub biases: [f64; 3]
@@ -15,6 +16,6 @@ impl LayerDense {
     }
 
     pub fn fwd(self, inputs: &FynnArray) -> FynnArray {
-        helpers::dot(&inputs, &self.weights.transpose()) + &self.biases
+        helpers::dot(&inputs, &self.weights) + &self.biases
     }
 }

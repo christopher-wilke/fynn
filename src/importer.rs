@@ -37,8 +37,12 @@ impl Importer {
         v
     }
 
-    pub fn get_points(&self) -> &Vec<Point> {
-        &self.v
+    pub fn get_values(&self) -> Vec<Vec<f64>> {
+        let mut v = vec![];
+        for p in self.v.iter() {
+            v.push(vec![p.X, p.Y]);
+        }
+        v
     }
 
     pub fn get_x(&self) -> Vec<f64> {
@@ -48,4 +52,13 @@ impl Importer {
             .map(|v| v.X)
             .collect()
     }
+
+    pub fn get_y(&self) -> Vec<f64> {
+        self.clone()
+            .v
+            .iter()
+            .map(|v| v.Y)
+            .collect()
+    }
+    
 }
