@@ -14,8 +14,8 @@ pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
             let mut weight_col_idx: usize = 0;
             let mut res = 0.;
             for val in (&inputs).matrix[i as usize].iter() {
-                res += val*(&weights).matrix[weight_col_idx][weight_row_idx];
-                weight_col_idx += 1;    
+                res += val * (&weights).matrix[weight_col_idx][weight_row_idx];
+                weight_col_idx += 1;
             }
             weight_row_idx += 1;
             row.push(res);
@@ -37,7 +37,6 @@ pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
     //         })
     //         .collect()
     // }).collect();
-    
+
     out.to_fynn_array()
 }
-

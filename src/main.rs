@@ -10,9 +10,11 @@ use layer_dense::LayerDense;
 static INPUT: &str = "py/out.txt";
 
 pub fn main() {
+    env_logger::init();
 
     let content = Importer::from(INPUT);
-    let input = content.get_values()
+    let input = content
+        .get_values()
         .iter()
         .take(5)
         .cloned()
@@ -21,5 +23,5 @@ pub fn main() {
 
     let layer_dense = LayerDense::new();
     let output = layer_dense.fwd(&input);
-    println!("output={output:?}");
+    log::debug!("output={output:?}");
 }

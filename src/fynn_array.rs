@@ -13,7 +13,9 @@ pub trait FynnBehavior {
 
 impl FynnBehavior for Vec<Vec<f64>> {
     fn to_fynn_array(self) -> FynnArray {
-        FynnArray { matrix: Vec::from(self) }
+        FynnArray {
+            matrix: Vec::from(self),
+        }
     }
 }
 
@@ -44,12 +46,11 @@ impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
 }
 
 impl FynnArray {
-
     pub fn zeros(h: usize, w: usize) -> Self {
         let mut matrix = vec![];
-        for i in 0..h {
+        for _ in 0..h {
             let mut row = vec![];
-            for j in 0..w {
+            for _ in 0..w {
                 row.push(0.);
             }
             matrix.push(row)
@@ -59,9 +60,9 @@ impl FynnArray {
 
     pub fn randn(h: usize, w: usize) -> Self {
         let mut matrix: Vec<Vec<f64>> = vec![];
-        for i in 0..h {
+        for _ in 0..h {
             let mut row = vec![];
-            for j in 0..w {
+            for _ in 0..w {
                 let val: f64 = thread_rng().sample(StandardNormal);
                 row.push(val);
             }
@@ -69,16 +70,13 @@ impl FynnArray {
         }
         Self { matrix }
     }
-    
+
     /// Returns 2d-dimensions in (width, height)
     pub fn get_dim(&self) -> (usize, usize) {
-        (
-            *(&self.matrix[0].len()), 
-            *(&self.matrix.len())
-        )
+        (*(&self.matrix[0].len()), *(&self.matrix.len()))
     }
 
-    pub fn transpose(mut self) -> Self  {
+    pub fn transpose(mut self) -> Self {
         assert!(!self.matrix.is_empty());
         let num_cols = self.matrix.first().unwrap().len();
         let mut row_iters: Vec<_> = self.matrix.into_iter().map(Vec::into_iter).collect();
@@ -87,7 +85,6 @@ impl FynnArray {
             .collect();
         self
     }
-
 }
 
 // Math Overloads for `FynnArray`
@@ -116,10 +113,8 @@ impl std::ops::Add<&[f64]> for FynnArray {
             }
             matrix.push(new_row);
         }
-        
-        FynnArray {
-            matrix
-        }
+
+        FynnArray { matrix }
     }
 }
 
