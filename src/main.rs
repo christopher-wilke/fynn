@@ -11,17 +11,19 @@ static INPUT: &str = "py/out.txt";
 
 pub fn main() {
     env_logger::init();
-
+   
     let content = Importer::from(INPUT);
     let input = content
         .get_values()
         .iter()
-        .take(5)
+        .take(10)
         .cloned()
         .collect::<Vec<Vec<f64>>>()
         .to_fynn_array();
 
-    let layer_dense = LayerDense::new();
+    let n_inputs = input.matrix.first().unwrap().len();
+    let n_neurons: usize = 3;
+    let layer_dense = LayerDense::new(n_inputs, n_neurons);
     let output = layer_dense.fwd(&input);
     log::debug!("output={output:?}");
 }

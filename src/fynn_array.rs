@@ -3,6 +3,7 @@ use std::{fmt::Debug, usize};
 use rand::prelude::*;
 use rand_distr::StandardNormal;
 
+#[derive(Clone)]
 pub struct FynnArray {
     pub matrix: Vec<Vec<f64>>,
 }

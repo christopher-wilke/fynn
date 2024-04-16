@@ -23,20 +23,5 @@ pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
         out.push(row);
     }
 
-    // let out: Vec<Vec<f64>> = (0..h).map(|i| {
-    //     (&inputs).matrix[i as usize]
-    //         .iter()
-    //         .enumerate()
-    //         .map(|(weight_row_idx, _)| {
-    //             (&weights).matrix
-    //                 .iter()
-    //                 .enumerate()
-    //                 .fold(0., |acc, (weight_col_idx, weight_col)| {
-    //                     acc + weight_col[weight_row_idx] * (&inputs).matrix[i as usize][weight_col_idx]
-    //                 })
-    //         })
-    //         .collect()
-    // }).collect();
-
     out.to_fynn_array()
 }

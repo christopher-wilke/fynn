@@ -7,14 +7,15 @@ pub struct LayerDense {
 }
 
 impl LayerDense {
-    pub fn new() -> Self {
-        let weights = 0.01 * FynnArray::randn(2, 3);
+    pub fn new(n_inputs: usize, n_neurons: usize) -> Self {
+        let weights = 0.01 * FynnArray::randn(n_inputs, n_neurons);
         let biases = [0., 0., 0.];
 
         Self { weights, biases }
     }
 
-    pub fn fwd(self, inputs: &FynnArray) -> FynnArray {
+    pub fn fwd(&self, inputs: &FynnArray) -> FynnArray {
+        log::trace!("input: \n{:?}\n weight: \n{:?}\n bias: \n{:?}", inputs, &self.weights, &self.biases);
         helpers::dot(&inputs, &self.weights) + &self.biases
     }
 }

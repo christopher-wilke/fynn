@@ -16,7 +16,7 @@ pub struct Importer {
 
 impl Importer {
     pub fn from(f: &str) -> Self {
-        log::debug!("Importing '{f}'");
+        log::trace!("Importing '{f}'");
         let file = File::open(f).expect("could not open input file");
         let reader = io::BufReader::new(file).lines();
         let mut resp = vec![];
