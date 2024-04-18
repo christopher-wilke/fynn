@@ -1,5 +1,16 @@
 use crate::{FynnArray, FynnBehavior};
 
+pub fn get_normalized(val: Vec<f64>) -> Vec<f64> {
+    let v: Vec<f64> = val.into_iter()
+        .map(|x| std::f64::consts::E.powf(x))
+        .collect();
+    let sum = v.iter().sum::<f64>();
+
+    v.into_iter()
+        .map(|x| x / sum)
+        .collect()
+}
+
 pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
     assert!(inputs.get_dim().0 == weights.get_dim().1);
 
