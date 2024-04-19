@@ -1,14 +1,35 @@
 use crate::{FynnArray, FynnBehavior};
 
-pub fn get_normalized(val: Vec<f64>) -> Vec<f64> {
-    let v: Vec<f64> = val.into_iter()
-        .map(|x| std::f64::consts::E.powf(x))
-        .collect();
-    let sum = v.iter().sum::<f64>();
+/// This function implements the following specs:
+/// * axis=1
+/// * keepdims=True
+pub fn sum(val: &FynnArray) -> Vec<Vec<f64>> {
+    let mut v = vec![];
+    val.matrix
+        .iter()
+        .for_each(|x| {
+            v.push(vec![x.iter().sum()]);
+        });
+    v
+}
 
-    v.into_iter()
-        .map(|x| x / sum)
-        .collect()
+pub fn normalize(val: FynnArray) -> bool {
+    let v: Vec<Vec<f64>> = val.matrix
+        .into_iter()
+        .map(|x| {
+            x.into_iter()
+                .map(|y| std::f64::consts::E.powf(y))
+                .collect()
+        })
+        .collect();
+    
+    log::debug!("{v:?}");
+    // let sum = v.iter().sum::<f64>();
+
+    // v.into_iter()
+    //     .map(|x| x / sum)
+    //     .collect()
+    true
 }
 
 pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
