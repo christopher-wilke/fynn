@@ -9,26 +9,29 @@ use fynn_array::*;
 use importer::*;
 use layer_dense::LayerDense;
 use activation_relu::ActivationRelu;
-use activations::softmax::*;
+use activations::{softmax::*, Activation};
 
 static INPUT: &str = "py/out.txt";
 
 pub fn main() {
     env_logger::init();
 
-    Softmax::test();
+    let val = [1., 2., 3.];
 
-    // let v = [
-    //     [4.8, 1.21, 2.385],
-    //     [8.9, -1.81, 0.2],
-    //     [1.41, 1.051, 0.026]
-    // ].to_fynn_array();
+    let s = Softmax {};
+    // s.forward(&val);
 
-    // let out = helpers::sum(&v);
-    // log::debug!("{out:?}");
+    let v = [
+        [4.8, 1.21, 2.385],
+        [8.9, -1.81, 0.2],
+        [1.41, 1.051, 0.026]
+    ].to_fynn_array();
 
-    // let probabilities= helpers::normalize(v);
-    // log::debug!("{probabilities:?}");
+    let sum = helpers::sum(&v);
+    log::debug!("sum={sum:?}");
+
+    let probabilities= helpers::normalize(v);
+    log::debug!("{probabilities:?}");
    
     // let content = Importer::from(INPUT);
     // let input = content
