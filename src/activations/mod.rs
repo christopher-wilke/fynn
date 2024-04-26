@@ -1,6 +1,8 @@
+use crate::FynnArray;
+
 pub mod relu;
 pub mod softmax;
 
 pub trait Activation {
-    fn forward(&self, inputs: &[f64]);
+    fn forward(&self, inputs: FynnArray);
 }

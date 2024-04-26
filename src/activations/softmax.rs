@@ -1,9 +1,12 @@
+use crate::FynnArray;
 use super::Activation;
+
 pub struct Softmax;
 
 impl Activation for Softmax {
-    fn forward(&self, inputs: &[f64]) {
-        println!("trying to fwd using softmax");
+    fn forward(&self, inputs: FynnArray) {
+        // let exp_values = inputs.matrix.iter().max();
+        // log::debug!("{exp_values:?}");
 
         // 1. Get unnormalized probabilities
         //    np.exp(inpuits - np.max(inpuits, axis=1, keepdims=True))

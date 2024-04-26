@@ -13,19 +13,19 @@ pub fn sum(val: &FynnArray) -> Vec<Vec<f64>> {
     v
 }
 
-pub fn normalize(val: FynnArray) -> Vec<Vec<f64>> {
-    // Calc exponentials
-    let exp_values: Vec<Vec<f64>> = val.matrix
+pub fn exp(val: FynnArray) -> Vec<Vec<f64>> {
+    val.matrix
         .into_iter()
         .map(|x| {
             x.into_iter()
                 .map(|y| std::f64::consts::E.powf(y))
                 .collect()
         })
-        .collect();
+        .collect()
+}
 
-    // trying to normalize
-    let normed: Vec<Vec<f64>> = exp_values
+pub fn norm(x: Vec<Vec<f64>>) -> Vec<Vec<f64>> {
+    x
         .into_iter()
         .map(|x| {
             let sum = x.iter().sum::<f64>();
@@ -33,9 +33,18 @@ pub fn normalize(val: FynnArray) -> Vec<Vec<f64>> {
                 .map(|y| y/sum)
                 .collect()
         })
-        .collect();
+        .collect()
+}
+
+pub fn normalize(val: FynnArray) -> Vec<Vec<f64>> {
+    // Calc exponentials
+    let exp_values = exp(val);
+    log::debug!("exp_values: {exp_values:?}");
+
+    let normalized = norm(exp_values);
+    log::debug!("probablilities={normalized:?}");
    
-    normed
+    normalized
 }
 
 pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
