@@ -101,6 +101,31 @@ impl std::ops::Mul<FynnArray> for f64 {
     }
 }
 
+impl std::ops::Sub<&Vec<Vec<f64>>> for FynnArray {
+    type Output = FynnArray;
+
+    fn sub(self, rhs: &Vec<Vec<f64>>) -> Self::Output {
+        log::info!("self: {self:?}");
+        log::info!("rhs: {rhs:?}");
+
+        let mut matrix = vec![];
+
+        for (i, v) in self.matrix
+            .iter()
+            .enumerate() 
+        {
+            let mut new_row = vec![1337.];
+            for val in v {
+                log::error!("{val} - {i}");
+            }
+            matrix.push(new_row);
+        }
+
+        FynnArray { matrix: vec![] }
+    }
+}
+
+
 impl std::ops::Add<&[f64]> for FynnArray {
     type Output = FynnArray;
 

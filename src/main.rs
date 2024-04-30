@@ -24,7 +24,11 @@ pub fn main() {
                  [0.0031, 1.242]
     ].to_fynn_array();
 
-    MathHelpers::max(input);
+    let max_values = MathHelpers::max(&input);
+    log::info!("{max_values:?}");
+
+    let m = input - &max_values;
+    // log::info!("{m:?}");
 
     // let softmax = Softmax {};
     // softmax.forward(input);
