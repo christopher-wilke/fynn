@@ -105,23 +105,22 @@ impl std::ops::Sub<&Vec<Vec<f64>>> for FynnArray {
     type Output = FynnArray;
 
     fn sub(self, rhs: &Vec<Vec<f64>>) -> Self::Output {
-        log::info!("self: {self:?}");
-        log::info!("rhs: {rhs:?}");
-
-        let mut matrix = vec![];
+        let mut matrix = Vec::new();
 
         for (i, v) in self.matrix
             .iter()
             .enumerate() 
         {
-            let mut new_row = vec![1337.];
+            let mut new_row = Vec::new();
+            let su = rhs.get(i).unwrap().get(0).unwrap();
             for val in v {
-                log::error!("{val} - {i}");
+                let m = val - su;
+                new_row.push(m);
             }
             matrix.push(new_row);
         }
 
-        FynnArray { matrix: vec![] }
+        FynnArray { matrix }
     }
 }
 

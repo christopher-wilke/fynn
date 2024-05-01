@@ -27,8 +27,8 @@ pub fn main() {
     let max_values = MathHelpers::max(&input);
     log::info!("{max_values:?}");
 
-    let m = input - &max_values;
-    // log::info!("{m:?}");
+    let exp = MathHelpers::exp(input - &max_values);
+    log::info!("{exp:?}");
 
     // let softmax = Softmax {};
     // softmax.forward(input);
