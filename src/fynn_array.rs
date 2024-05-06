@@ -101,7 +101,7 @@ impl std::ops::Mul<FynnArray> for f64 {
     }
 }
 
-impl std::ops::Sub<&Vec<Vec<f64>>> for FynnArray {
+impl std::ops::Sub<&Vec<Vec<f64>>> for &FynnArray {
     type Output = FynnArray;
 
     fn sub(self, rhs: &Vec<Vec<f64>>) -> Self::Output {

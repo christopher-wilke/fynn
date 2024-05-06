@@ -23,12 +23,11 @@ pub fn main() {
                  [0.0231, -1.432],
                  [0.0031, 1.242]
     ].to_fynn_array();
-
-    let max_values = MathHelpers::max(&input);
-    log::info!("{max_values:?}");
-
-    let exp = MathHelpers::exp(input - &max_values);
-    log::info!("{exp:?}");
+    
+    let exp_values = MathHelpers::exp(&(&input - &MathHelpers::max(&input)));
+    let sum = MathHelpers::sum(&exp_values.clone().to_fynn_array());
+    let probabilities = MathHelpers::normalize(&exp_values.to_fynn_array(), &sum.to_fynn_array());
+    log::debug!("{probabilities:?}");
 
     // let softmax = Softmax {};
     // softmax.forward(input);
