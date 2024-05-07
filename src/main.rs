@@ -7,10 +7,10 @@ mod activations;
 mod math_helpers;
 
 use fynn_array::*;
-use importer::*;
-use layer_dense::LayerDense;
-use activation_relu::ActivationRelu;
-use activations::{softmax::*, Activation};
+// use importer::*;
+// use layer_dense::LayerDense;
+// use activation_relu::ActivationRelu;
+// use activations::{softmax::*, Activation};
 use math_helpers::*;
 
 static INPUT: &str = "py/out.txt";
@@ -25,9 +25,10 @@ pub fn main() {
     ].to_fynn_array();
     
     let exp_values = MathHelpers::exp(&(&input - &MathHelpers::max(&input)));
-    let sum = MathHelpers::sum(&exp_values.clone().to_fynn_array());
-    let probabilities = MathHelpers::normalize(&exp_values.to_fynn_array(), &sum.to_fynn_array());
-    log::debug!("{probabilities:?}");
+    let sum = MathHelpers::sum(&exp_values).to_fynn_array();
+    let probabilities = &exp_values / &sum;
+    // let probabilities = MathHelpers::normalize(&exp_values, &MathHelpers::sum(&exp_values));
+    // log::debug!("{probabilities:?}");
 
     // let softmax = Softmax {};
     // softmax.forward(input);

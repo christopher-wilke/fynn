@@ -124,6 +124,16 @@ impl std::ops::Sub<&Vec<Vec<f64>>> for &FynnArray {
     }
 }
 
+impl std::ops::Div<&FynnArray> for &Vec<Vec<f64>> {
+    type Output = FynnArray;
+
+    fn div(self, rhs: &FynnArray) -> Self::Output {
+        log::debug!("trying to div sth here :)");
+        log::debug!("self: {self:?}");
+        log::debug!("rhs: {rhs:?}");
+        FynnArray { matrix: vec![] }
+    }
+}
 
 impl std::ops::Add<&[f64]> for FynnArray {
     type Output = FynnArray;
