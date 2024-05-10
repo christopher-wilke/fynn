@@ -24,9 +24,11 @@ pub fn main() {
                  [0.0031, 1.242]
     ].to_fynn_array();
     
-    let exp_values = MathHelpers::exp(&(&input - &MathHelpers::max(&input)));
+    let exp_values = MathHelpers::exp(&input - &MathHelpers::max(&input));
     let sum = MathHelpers::sum(&exp_values).to_fynn_array();
     let probabilities = &exp_values / &sum;
+
+    log::debug!("final={probabilities:?}");
     // let probabilities = MathHelpers::normalize(&exp_values, &MathHelpers::sum(&exp_values));
     // log::debug!("{probabilities:?}");
 

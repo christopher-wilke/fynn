@@ -47,6 +47,13 @@ impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
 }
 
 impl FynnArray {
+
+    pub fn new() -> Self {
+        Self {
+            matrix: vec![]
+        }
+    }
+    
     pub fn zeros(h: usize, w: usize) -> Self {
         let mut matrix = vec![];
         for _ in 0..h {
@@ -128,10 +135,20 @@ impl std::ops::Div<&FynnArray> for &Vec<Vec<f64>> {
     type Output = FynnArray;
 
     fn div(self, rhs: &FynnArray) -> Self::Output {
-        log::debug!("trying to div sth here :)");
-        log::debug!("self: {self:?}");
-        log::debug!("rhs: {rhs:?}");
-        FynnArray { matrix: vec![] }
+        let mut fa = FynnArray::new();
+    
+        for (val, sum) in self
+            .iter()
+            .zip(rhs.matrix.iter()) 
+        {
+            let mut arr = vec![];
+            for v in val {
+                arr.push(*v/sum.get(0).unwrap());
+            }
+            fa.matrix.push(arr);
+        }
+    
+        fa
     }
 }
 
