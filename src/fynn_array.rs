@@ -131,10 +131,10 @@ impl std::ops::Sub<&Vec<Vec<f64>>> for &FynnArray {
     }
 }
 
-impl std::ops::Div<&FynnArray> for &Vec<Vec<f64>> {
+impl std::ops::Div<FynnArray> for Vec<Vec<f64>> {
     type Output = FynnArray;
 
-    fn div(self, rhs: &FynnArray) -> Self::Output {
+    fn div(self, rhs: FynnArray) -> Self::Output {
         let mut fa = FynnArray::new();
     
         for (val, sum) in self
@@ -147,7 +147,6 @@ impl std::ops::Div<&FynnArray> for &Vec<Vec<f64>> {
             }
             fa.matrix.push(arr);
         }
-    
         fa
     }
 }

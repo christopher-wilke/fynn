@@ -3,22 +3,8 @@ use crate::FynnArray;
 pub struct MathHelpers;
 
 impl MathHelpers {
-
-    // Normalization
-    pub fn normalize(exp_values: &Vec<Vec<f64>>, sum: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
-        let mut norm = vec![];
-        for (e, s) in exp_values.iter().zip(sum.iter()) {
-            let summed = *s.get(0).unwrap();
-            let mut val = vec![];
-            for i in e {
-                val.push(i/summed);
-            }
-            norm.push(val);
-        }
-        norm
-    }
-
-    // keepdims=True, axis=1
+ 
+    // keepdimis=True, axis=1
     pub fn sum(input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
         input
             .iter()
@@ -42,7 +28,6 @@ impl MathHelpers {
             })
             .collect()
     }
-
     
     pub fn exp(val: FynnArray) -> Vec<Vec<f64>> {
         val.matrix
