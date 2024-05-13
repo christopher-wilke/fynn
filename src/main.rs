@@ -20,7 +20,6 @@ static INPUT: &str = "py/out.txt";
 
 pub fn main() {
     env_logger::init();
-
     
     let input = [[0.1587, -2.3472],
                  [0.0112, -1.4121],
@@ -28,12 +27,11 @@ pub fn main() {
                  [0.2312, -1.4712],
                  [0.2412, -0.0123]].to_fynn_array();
                  
-    let dense1 = LayerDense::new(2, 3);
+    // let dense1 = LayerDense::new(2, 3);
+    let dense1 = LayerDense::demo_weights();
     let out_dense_1 = dense1.fwd(&input);
-    log::debug!("{:?}", out_dense_1);
-    // let activation1 = ActivationRelu::fwd(out_dense_1);
-    // log::debug!("{:?}", activation1);
-
+    let activation1 = ActivationRelu::fwd(out_dense_1).to_fynn_array();
+    log::debug!("{:?}", activation1);
 
     // let softmax = Softmax {};
     // let out = softmax.forward(input);    

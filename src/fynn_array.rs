@@ -175,6 +175,6 @@ impl Debug for FynnArray {
         for val in &self.matrix {
             out.push_str(format!("{:?}\n", val).as_str());
         }
-        write!(f, "{}", out)
+        write!(f, "\n{}", out)
     }
 }
