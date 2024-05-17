@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use crate::{helpers, FynnArray, FynnBehavior};
+use crate::{FynnArray, FynnBehavior, MathHelpers};
 
 #[derive(Debug)]
 pub struct LayerDense {
@@ -29,7 +29,6 @@ impl LayerDense {
     }
 
     pub fn fwd(&self, inputs: &FynnArray) -> FynnArray {
-        log::trace!("input: \n{:?}\n weight: \n{:?}\n bias: \n{:?}", inputs, &self.weights, &self.biases);
-        helpers::dot(&inputs, &self.weights) + &self.biases
+        MathHelpers::dot(&inputs, &self.weights) + &self.biases
     }
 }

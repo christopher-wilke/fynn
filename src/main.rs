@@ -1,41 +1,38 @@
-mod activation_relu;
 mod fynn_array;
-mod helpers;
 mod importer;
 mod layer_dense;
 mod activations;
 mod math_helpers;
 
-use activations::{Activation, softmax::*};
+use activations::{Activation, softmax::*, relu::*};
 use fynn_array::*;
+use layer_dense::LayerDense;
 // use importer::*;
-// use layer_dense::LayerDense;
-// use activation_relu::ActivationRelu;
-// use activations::{softmax::*, Activation};
 use math_helpers::*;
-
-use crate::{activation_relu::ActivationRelu, activations::relu::Relu, layer_dense::LayerDense};
 
 static INPUT: &str = "py/out.txt";
 
 pub fn main() {
     env_logger::init();
-    
+
+    // Sample Input    
     let input = [[0.1587, -2.3472],
                  [0.0112, -1.4121],
                  [0.0031, -0.0512], 
                  [0.2312, -1.4712],
                  [0.2412, -0.0123]].to_fynn_array();
-                 
-    // let dense1 = LayerDense::new(2, 3);
-    let dense1 = LayerDense::demo_weights();
-    let out_dense_1 = dense1.fwd(&input);
-    let activation1 = ActivationRelu::fwd(out_dense_1).to_fynn_array();
-    log::debug!("{:?}", activation1);
+    
+    // Sample Layer 1    
+    let dense1 = LayerDense::new(2, 3);
+    let out_dense_1 = dense1.fwd(&input);    
+    let activation1 = ActivationReLU::forward(out_dense_1);
 
-    // let softmax = Softmax {};
-    // let out = softmax.forward(input);    
-    // log::debug!("{out:?}");
+    // Sample Layer 2
+    let dense2 = LayerDense::new(3, 3);
+    let out_dense_2 = dense2.fwd(&activation1);
+    let activation2 = ActivationSoftmax::forward(out_dense_2);
+
+    log::debug!("{:?}", activation2);
    
     // let content = Importer::from(INPUT);
     // let input = content
