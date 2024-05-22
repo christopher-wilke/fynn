@@ -2,6 +2,7 @@ mod fynn_array;
 mod importer;
 mod layer_dense;
 mod activations;
+mod loss;
 mod math_helpers;
 
 use activations::{Activation, softmax::*, relu::*};
@@ -9,6 +10,8 @@ use fynn_array::*;
 use layer_dense::LayerDense;
 // use importer::*;
 use math_helpers::*;
+
+use crate::loss::{categorical_crossentropy::LossCategoricalCrossentropy, Loss};
 
 static INPUT: &str = "py/out.txt";
 
@@ -32,7 +35,7 @@ pub fn main() {
     let out_dense_2 = dense2.fwd(&activation1);
     let activation2 = ActivationSoftmax::forward(out_dense_2);
 
-    log::debug!("{:?}", activation2);
+    let loss_function = LossCategoricalCrossentropy::calculate(activation2, vec![]);
    
     // let content = Importer::from(INPUT);
     // let input = content
