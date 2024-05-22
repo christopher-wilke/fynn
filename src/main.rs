@@ -33,9 +33,10 @@ pub fn main() {
     // Sample Layer 2
     let dense2 = LayerDense::new(3, 3);
     let out_dense_2 = dense2.fwd(&activation1);
-    let activation2 = ActivationSoftmax::forward(out_dense_2);
+    let mut activation2 = ActivationSoftmax::forward(out_dense_2);
 
-    let loss_function = LossCategoricalCrossentropy::calculate(activation2, vec![]);
+    let y_true: Vec<usize> = vec![0, 0, 1, 1, 2];
+    let loss_function = LossCategoricalCrossentropy::calculate(activation2, y_true);
    
     // let content = Importer::from(INPUT);
     // let input = content

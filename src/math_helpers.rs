@@ -5,20 +5,20 @@ pub struct MathHelpers;
 
 impl MathHelpers {
 
-    pub fn clip(mut input: FynnArray, min: f64, max: f64) {
+    pub fn clip(mut input: FynnArray, min: f64, max: f64) -> Vec<Vec<f64>> {
         let v: Vec<Vec<f64>> = input.matrix
             .iter_mut()
             .map(|row| {
                 row
                     .iter_mut()
                     .map(|v| {
-                        *v = 1338.1337;
+                        *v = v.clamp(min, max);
                         *v
                     })
                     .collect()
             })
             .collect();
-        log::debug!("{v:?}");
+        v
     }
 
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
