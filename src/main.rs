@@ -37,6 +37,8 @@ pub fn main() {
 
     let y_true: Vec<usize> = vec![0, 0, 1, 1, 2];
     let loss_function = LossCategoricalCrossentropy::calculate(activation2, y_true);
+
+    // log::debug!("aftter loss")
    
     // let content = Importer::from(INPUT);
     // let input = content

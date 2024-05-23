@@ -6,19 +6,17 @@ pub struct MathHelpers;
 impl MathHelpers {
 
     pub fn clip(mut input: FynnArray, min: f64, max: f64) -> Vec<Vec<f64>> {
-        let v: Vec<Vec<f64>> = input.matrix
+        input.matrix
             .iter_mut()
             .map(|row| {
                 row
                     .iter_mut()
                     .map(|v| {
-                        *v = v.clamp(min, max);
-                        *v
+                        v.clamp(min, max)
                     })
                     .collect()
             })
-            .collect();
-        v
+            .collect()
     }
 
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
