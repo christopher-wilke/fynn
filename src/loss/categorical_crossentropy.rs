@@ -5,19 +5,19 @@ pub struct LossCategoricalCrossentropy;
 
 impl Loss for LossCategoricalCrossentropy {
 
-    // As of May 2024, we expect y_true shape to be 1-dimensional
-    fn calculate(y_pred: FynnArray, y_true: Vec<usize>) {
-        let samples = y_pred.matrix.len();        
+    // todo: add support for y_true to be multidimensional
+    fn calculate(y_pred: FynnArray, y_true: Vec<usize>) -> f64 {
         let y_pred_clipped = MathHelpers::clip(y_pred, 0.0000001, 0.9999999);
 
-        // calculating correct_confidence
-        let mut correct_confidence = vec![];
-        for (v, v_true) in y_pred_clipped.iter().zip(y_true.iter()) {
-            let conf = -v[*v_true].ln();
-            correct_confidence.push(conf);
-        }
+        let correct_confidence: Vec<f64> = y_pred_clipped
+            .iter()
+            .zip(y_true.iter())
+            .map(|(v, &v_true)| {
+                let val = *v.get(v_true).unwrap();
+                -val.ln()
+            })
+            .collect();
 
-        let avg_loss = correct_confidence.iter().sum::<f64>() / correct_confidence.len() as f64;
-        log::error!("{avg_loss:?}");
+        correct_confidence.iter().sum::<f64>() / correct_confidence.len() as f64
     }
 }

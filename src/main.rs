@@ -8,7 +8,7 @@ mod math_helpers;
 use activations::{Activation, softmax::*, relu::*};
 use fynn_array::*;
 use layer_dense::LayerDense;
-// use importer::*;
+use importer::*;
 use math_helpers::*;
 
 use crate::loss::{categorical_crossentropy::LossCategoricalCrossentropy, Loss};
@@ -18,27 +18,46 @@ static INPUT: &str = "py/out.txt";
 pub fn main() {
     env_logger::init();
 
-    // Sample Input    
-    let input = [[0.1587, -2.3472],
-                 [0.0112, -1.4121],
-                 [0.0031, -0.0512], 
-                 [0.2312, -1.4712],
-                 [0.2412, -0.0123]].to_fynn_array();
+    let content = Importer::from(INPUT);
+
+    // for v in content.get_v().iter() {
+    //     log::error!("{v:?}");
+    // }
+
+    let y_true = content.get_y_true();
+
+    // for c in content.get_y_true() {
+    //     log::error!("{c:?}");
+    // }
     
-    // Sample Layer 1    
-    let dense1 = LayerDense::new(2, 3);
-    let out_dense_1 = dense1.fwd(&input);    
-    let activation1 = ActivationReLU::forward(out_dense_1);
+    // let input = content.get_values();
+    // let input = content
+    //     .get_values()
+    //     .iter()
+    //     .cloned()
+    //     .collect::<Vec<Vec<f64>>>()
+    //     .to_fynn_array();
 
-    // Sample Layer 2
-    let dense2 = LayerDense::new(3, 3);
-    let out_dense_2 = dense2.fwd(&activation1);
-    let mut activation2 = ActivationSoftmax::forward(out_dense_2);
+    // // Sample Input
+    // let input = [[0.1587, -2.3472],
+    //              [0.0112, -1.4121],
+    //              [0.0031, -0.0512], 
+    //              [0.2312, -1.4712],
+    //              [0.2412, -0.0123]].to_fynn_array();
+    // let y_true: Vec<usize> = vec![0, 0, 0, 0, 0];
+     
+    // // Sample Layer 1    
+    // let dense1 = LayerDense::new(2, 3);
+    // let out_dense_1 = dense1.fwd(&input);    
+    // let activation1 = ActivationReLU::forward(out_dense_1);
 
-    let y_true: Vec<usize> = vec![0, 0, 1, 1, 2];
-    let loss_function = LossCategoricalCrossentropy::calculate(activation2, y_true);
-
-    // log::debug!("aftter loss")
+    // // Sample Layer 2
+    // let dense2 = LayerDense::new(3, 3);
+    // let out_dense_2 = dense2.fwd(&activation1);
+    // let mut activation2 = ActivationSoftmax::forward(out_dense_2);
+    
+    // let loss= LossCategoricalCrossentropy::calculate(activation2, y_true);
+    // log::debug!("CategoricalCrossEntropy Loss: {}", loss);
    
     // let content = Importer::from(INPUT);
     // let input = content
