@@ -2,6 +2,7 @@ use std::{fmt::Debug, usize};
 
 use rand::prelude::*;
 use rand_distr::StandardNormal;
+use crate::Point;
 
 #[derive(Clone)]
 pub struct FynnArray {
@@ -10,6 +11,18 @@ pub struct FynnArray {
 
 pub trait FynnBehavior {
     fn to_fynn_array(self) -> FynnArray;
+}
+
+impl FynnBehavior for Vec<Point> {
+    fn to_fynn_array(self) -> FynnArray {
+        let matrix: Vec<Vec<f64>> = self.iter()
+            .map(|p| vec![p.X, p.Y])
+            .collect();
+
+        FynnArray {
+            matrix
+        }
+    }
 }
 
 impl FynnBehavior for Vec<Vec<f64>> {
