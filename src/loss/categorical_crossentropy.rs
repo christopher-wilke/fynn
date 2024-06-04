@@ -12,8 +12,8 @@ impl Loss for LossCategoricalCrossentropy {
         let correct_confidence: Vec<f64> = y_pred_clipped
             .iter()
             .zip(y_true.iter())
-            .map(|(v, &v_true)| {
-                let val = *v.get(v_true).unwrap();
+            .map(|(v, v_true)| {
+                let val = *v.get(*v_true).unwrap();
                 -val.ln()
             })
             .collect();

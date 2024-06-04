@@ -5,6 +5,17 @@ pub struct MathHelpers;
 
 impl MathHelpers {
 
+    pub fn mean(a: &Vec<i32>, b: &Vec<i32>) -> f64 {
+        assert!(a.len() == b.len());
+
+        let counter: usize = a.iter()
+            .zip(b.iter())
+            .filter(|&(a_v, b_v)| a_v == b_v)
+            .count();
+        
+        counter as f64 / a.len() as f64
+    }
+
     pub fn clip(mut input: FynnArray, min: f64, max: f64) -> Vec<Vec<f64>> {
         input.matrix
             .iter_mut()
