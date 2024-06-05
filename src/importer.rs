@@ -18,10 +18,30 @@ pub struct Importer {
 }
 
 impl Importer {
-    pub fn from(f: &str) -> (FynnArray, Vec<i32>) {
-        log::trace!("Importing '{f}'");
-        let file = File::open(f).expect("could not open input file");
-        let reader = io::BufReader::new(file).lines();
+
+    pub fn from_files(input: &str, y_true: &str) -> (FynnArray, Vec<usize>) {
+        log::trace!("Input: {input}, y_true: {y_true}");
+
+        // Input
+        let f_input = File::open(input).expect("could not open file");
+        let input_val = Self::file_to_vec(f_input);
+        let input_out = Self::input_converter(input_val);
+
+        // Y_true
+        let f_y_true = File::open(y_true).expect("could not open file");
+        let y_true_val: Vec<usize> = Self::file_to_vec(f_y_true).into();
+
+        (input_out, y_true_val)
+    }
+
+    pub fn to_vec<T>(item: T) -> Vec<T> {
+        let mut resp = vec![];
+        resp.push(item);
+        resp
+    }
+
+    pub fn file_to_vec(input: File) -> Vec<f64> {
+        let reader = io::BufReader::new(input).lines();
         let mut resp = vec![];
 
         for line in reader.flatten() {
@@ -31,26 +51,19 @@ impl Importer {
             }
         }
 
-        Self::converter(resp)
+        resp
     }
 
-    fn converter(values: Vec<f64>) -> (FynnArray, Vec<i32>) {
+    fn input_converter(values: Vec<f64>) -> FynnArray {
         let mut v: Vec<Point> = vec![];
-        let mut y_true = vec![];
-        // Startin with -1 as logic increments by 1
-        let mut current_y_true = -1;
         
         for chunk in values.chunks(2) {
             if let [x, y] = chunk {
-                if *x == 0. && *y == 0. {
-                    current_y_true += 1;
-                }
                 v.push(Point { X: *x, Y: *y });
-                y_true.push(current_y_true);
             }
         }
 
-        (v.to_fynn_array(), y_true)
+        v.to_fynn_array()
     }
 
     pub fn get_v(self) -> Vec<Point> {
