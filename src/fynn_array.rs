@@ -115,7 +115,7 @@ impl std::ops::Mul<FynnArray> for f64 {
     fn mul(self, rhs: FynnArray) -> Self::Output {
         rhs.matrix
             .iter()
-            .map(|i| i.iter().map(|&val| 0.01 * val).collect())
+            .map(|i| i.iter().map(|&val| self*val).collect())
             .collect::<Vec<Vec<f64>>>()
             .to_fynn_array()
     }

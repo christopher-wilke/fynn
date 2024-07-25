@@ -1,3 +1,5 @@
+use rand::Rng;
+
 use crate::FynnArray;
 use crate::FynnBehavior;
 
@@ -90,5 +92,14 @@ impl MathHelpers {
                     .collect()
             })
             .collect()
+    }
+
+    pub fn rand_biases(w: usize) -> Vec<f64> {
+        let mut v = vec![];
+        let mut rng = rand::thread_rng();
+        for _ in 0..w {
+            v.push(rng.gen_range(0.000001..1.99999));
+        }
+        v 
     }
 }

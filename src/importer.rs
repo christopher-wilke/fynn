@@ -59,12 +59,4 @@ impl Importer {
         v.to_fynn_array()
     }
 
-    pub fn get_v(self) -> Vec<Point> {
-        self.v
-    }
-
-    pub fn get_y_true(self) -> Vec<i32> {
-        self.y_true
-    }
-
 }
