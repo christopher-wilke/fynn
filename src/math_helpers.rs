@@ -18,8 +18,23 @@ impl MathHelpers {
         counter as f64 / a.len() as f64
     }
 
-    pub fn clip(mut input: FynnArray, min: f64, max: f64) -> Vec<Vec<f64>> {
-        input.matrix
+    pub fn argmax(v: FynnArray) -> Vec<usize> {
+        let mut classes = vec![];
+        for i in v.matrix {
+            if let Some((highest_el_pos, _)) = i
+                .iter()
+                .enumerate()
+                .max_by(|a, b| a.1.partial_cmp(b.1).unwrap()) 
+            {
+                classes.push(highest_el_pos);
+            }            
+        }
+        classes
+     }
+    
+    pub fn clip(input: &mut FynnArray, min: f64, max: f64) -> Vec<Vec<f64>> {
+        input
+            .matrix
             .iter_mut()
             .map(|row| {
                 row

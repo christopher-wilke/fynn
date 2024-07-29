@@ -30,7 +30,7 @@ pub fn main() {
     let out_dense_2 = dense2.fwd(&activation1);
     let activation2 = ActivationSoftmax::forward(out_dense_2);
     
-    let loss_function = LossCategoricalCrossentropy::calculate(activation2, y_true.clone());
+    // let loss_function = LossCategoricalCrossentropy::calculate(activation2, y_true.clone());
 
     // Helper Vars
     let mut lowest_loss = 9999999.;
@@ -39,7 +39,7 @@ pub fn main() {
     let best_dense2_weights = dense2.weights.clone();
     let best_dense2_biases = dense2.biases.clone();
 
-    for i in 0..10000 {
+    for i in 0..1 {
         dense1.weights = 0.05*FynnArray::randn(2, 3);
         dense1.biases = MathHelpers::rand_biases(3)
             .try_into()
@@ -52,13 +52,16 @@ pub fn main() {
         let dense1 = dense1.fwd(&input);
         let activation1 = ActivationReLU::forward(dense1);
         let dense2 = dense2.fwd(&activation1);
-        let activation2 = ActivationSoftmax::forward(dense2);
+        let mut activation2 = ActivationSoftmax::forward(dense2);
+        
+        let loss = LossCategoricalCrossentropy::calculate(&mut activation2, y_true.clone());
+        let predictions = MathHelpers::argmax(activation2.clone()); 
 
-        let loss = LossCategoricalCrossentropy::calculate(activation2, y_true.clone());
+        log::info!("{predictions:?}");
 
         if loss < lowest_loss {
             lowest_loss = loss;
-            log::info!("iter={i} new lower loss found: {lowest_loss}");
+            // log::info!("iter={i} new lower loss found: {lowest_loss}");
         }
     }
 

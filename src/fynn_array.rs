@@ -1,4 +1,4 @@
-use std::{fmt::Debug, usize};
+use std::{fmt::Debug, ops::Deref, usize};
 
 use rand::prelude::*;
 use rand_distr::StandardNormal;
@@ -23,6 +23,7 @@ impl FynnBehavior for Vec<Point> {
             matrix
         }
     }
+    
 }
 
 impl FynnBehavior for Vec<Vec<f64>> {
