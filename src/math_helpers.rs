@@ -7,7 +7,7 @@ pub struct MathHelpers;
 
 impl MathHelpers {
 
-    pub fn mean(a: &Vec<i32>, b: &Vec<i32>) -> f64 {
+    pub fn mean(a: &Vec<usize>, b: &Vec<usize>) -> f64 {
         assert!(a.len() == b.len());
 
         let counter: usize = a.iter()

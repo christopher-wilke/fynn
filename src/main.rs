@@ -13,8 +13,6 @@ use math_helpers::*;
 
 use crate::loss::{categorical_crossentropy::LossCategoricalCrossentropy, Loss};
 
-static INPUT: &str = "py/out.txt";
-
 pub fn main() {
     env_logger::init();
 
@@ -39,7 +37,7 @@ pub fn main() {
     let best_dense2_weights = dense2.weights.clone();
     let best_dense2_biases = dense2.biases.clone();
 
-    for i in 0..1 {
+    for i in 0..10000 {
         dense1.weights = 0.05*FynnArray::randn(2, 3);
         dense1.biases = MathHelpers::rand_biases(3)
             .try_into()
@@ -57,11 +55,11 @@ pub fn main() {
         let loss = LossCategoricalCrossentropy::calculate(&mut activation2, y_true.clone());
         let predictions = MathHelpers::argmax(activation2.clone()); 
 
-        log::info!("{predictions:?}");
+        let accuracy = MathHelpers::mean(&predictions, &y_true);
 
         if loss < lowest_loss {
             lowest_loss = loss;
-            // log::info!("iter={i} new lower loss found: {lowest_loss}");
+            log::info!("New set of weights found. Iteration: {i}, Loss: {loss}, Accuarcy: {accuracy}");
         }
     }
 
