@@ -98,7 +98,7 @@ impl MathHelpers {
             .collect()
     }
     
-    pub fn exp(val: FynnArray) -> Vec<Vec<f64>> {
+    pub fn exp(val: &FynnArray) -> Vec<Vec<f64>> {
         val.matrix
             .iter()
             .map(|x| {

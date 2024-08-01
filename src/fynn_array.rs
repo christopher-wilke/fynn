@@ -1,4 +1,4 @@
-use std::{fmt::Debug, ops::Deref, usize};
+use std::{fmt::Debug, usize};
 
 use rand::prelude::*;
 use rand_distr::StandardNormal;

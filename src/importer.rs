@@ -19,7 +19,7 @@ pub struct Importer {
 
 impl Importer {
 
-    pub fn from_files(input: &str, y_true: &str) -> (FynnArray, Vec<usize>) {
+    pub fn from_files(input: &str, y_true: &str) -> (FynnArray, Vec<i32>) {
         log::trace!("Input: {input}, y_true: {y_true}");
 
         // Input
@@ -29,18 +29,20 @@ impl Importer {
 
         // Y_true
         let f_y_true = File::open(y_true).expect("could not open file");
-        let y_true_val: Vec<usize> = Self::to_vec(f_y_true);
+        let y_true_val:  = Self::to_vec::<Vec<i32>>(f_y_true);
 
         (input_out, y_true_val)
     }
 
-    pub fn to_vec<T: std::str::FromStr + Default>(input: File) -> Vec<T> {
+    pub fn to_vec<T: std::str::FromStr + Default + std::fmt::Debug>(input: File) -> Vec<T> {
         let reader = io::BufReader::new(input).lines();
         let mut resp = vec![];
 
         for line in reader.flatten() {
             for v in line.split_whitespace() {
-                let val = v.parse::<T>().unwrap_or_default();
+                log::info!("v={}", v);
+                let val = v.parse::<T>().expect("some error");
+                // log::info!("converted={:?}", val);
                 resp.push(val);
             }
         }

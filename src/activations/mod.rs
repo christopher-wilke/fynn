@@ -4,5 +4,5 @@ pub mod relu;
 pub mod softmax;
 
 pub trait Activation {
-    fn forward(input: FynnArray) -> FynnArray;
+    fn forward(input: &FynnArray) -> FynnArray;
 }
