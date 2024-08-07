@@ -1,5 +1,5 @@
 use std::{
-    any::Any, fmt::Debug, fs::File, io::{self, BufRead, BufReader}
+    any::Any, fmt::Debug, fs::File, io::{self, BufRead, BufReader, Lines}
 };
 
 use crate::{FynnArray, FynnBehavior};
@@ -27,23 +27,25 @@ impl Importer {
         log::trace!("Input: {input}, y_true: {y_true}");
 
         // // Input
-        let f_input = File::open(input).expect("could not open file");
-        let input_val = Self::to_vec(f_input);
+        // let f_input = File::open(input).expect("could not open file");
+        // let input_val = Self::to_vec(f_input);
         // let input_out = Self::input_converter(input_val);
 
         // Y_true
         let f_y_true = File::open(y_true).expect("could not open file");
-        let mut y_true_val = Self::to_vec(f_y_true);
+        let reader = io::BufReader::new(f_y_true);
+        let y_true_val = Self::to_vec(reader);
 
         (FynnArray::new(), y_true_val)
     }
 
-    pub fn to_vec(input: File) -> InputType {
-        let first_line = io::BufReader::new(&input)
-            .lines()
-            .next();
+    pub fn to_vec(reader: BufReader<File>) -> InputType {
+        // let first_line = io::BufReader::new(&input)
+        //     .lines()
+        //     .next();
+        let mut pointer = reader.lines();
 
-        if let Some(val) = first_line 
+        if let Some(val) = pointer.next() 
         {
             let zeros = val
                 .unwrap()
@@ -51,30 +53,46 @@ impl Importer {
                 .filter(|c| c == &'0')
                 .count();
 
-            let reader = io::BufReader::new(input);
+            // let f_y_true = File::open("py/out_Y.txt").expect("could not open file");
+            // let reader = io::BufReader::new(f_y_true);
 
-            match zeros {
-                21 => Self::get_y(),
-                _ => log::info!("I am X")
-            }    
+            let input = match zeros {
+                21 => Self::get_y(pointer),
+                _ => Self::get_y(pointer)
+            };
         };
         
         InputType::Integer(vec![])
     }
 
-    fn get_y() {
-        log::info!("executing get_y");
-        let f_y_true = File::open("py/out_Y.txt").expect("could not open file");
-        let reader = io::BufReader::new(f_y_true);
-
-        for line in reader.lines() {
-            log::info!("{}", line.unwrap());
+    fn get_x(mut pointer: Lines<BufReader<File>>) -> InputType {
+        let mut values: Vec<f64> = vec![];
+        for line in pointer.next() {
+            let value = line
+                .unwrap()
+                .parse::<f64>()
+                .unwrap();
+            values.push(value);
         }
-    
-        // for line in reader.lines() {
-        //     let val = line.unwrap();
-        //     log::info!("jo");
-        // }
+        InputType::Float(values)
+    }
+
+    fn get_y(mut reader: Lines<BufReader<File>>) -> InputType {
+        let mut values: Vec<i32> = vec![];
+
+        for line in reader.next() {
+            let value = line.unwrap();
+            let v = value
+                .chars()
+                .nth(0)
+                .unwrap()
+                .to_digit(10)
+                .unwrap() as i32; 
+                
+            values.push(v);
+        }
+        log::info!("length of values is {}", values.len());
+        InputType::Integer(values)
     }
         
         // for line in reader.flatten() {
