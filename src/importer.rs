@@ -11,14 +11,14 @@ pub struct Point {
 }
 
 pub enum InputType {
-    Integer(Vec<i32>),
+    Integer(Vec<u32>),
     Float(Vec<f64>)
 }
 
 #[derive(Clone)]
 pub struct Importer {
     pub v: Vec<Point>,
-    pub y_true: Vec<i32>
+    pub y_true: Vec<u32>
 }
 
 impl Importer {
@@ -39,56 +39,44 @@ impl Importer {
         (FynnArray::new(), y_true_val)
     }
 
-    pub fn to_vec(reader: BufReader<File>) -> InputType {
-        // let first_line = io::BufReader::new(&input)
-        //     .lines()
-        //     .next();
-        let mut pointer = reader.lines();
+    pub fn to_vec(mut reader: BufReader<File>) -> InputType {
 
-        if let Some(val) = pointer.next() 
-        {
-            let zeros = val
-                .unwrap()
-                .chars()
-                .filter(|c| c == &'0')
-                .count();
+        let mut first_el = String::new();
+        let _ = reader.read_line(&mut first_el);
+        
+        let pointer = reader.lines();
+        let zeros = first_el
+            .chars()
+            .filter(|c| c == &'0')
+            .count();
 
-            // let f_y_true = File::open("py/out_Y.txt").expect("could not open file");
-            // let reader = io::BufReader::new(f_y_true);
-
-            let input = match zeros {
-                21 => Self::get_y(pointer),
-                _ => Self::get_y(pointer)
-            };
+        let input = match zeros {
+            21 => {
+                let first_prime = Self::first_char_convert(first_el);
+                Self::get_y(first_prime.unwrap(), pointer)
+            },
+            _ => Self::get_y(0, pointer)
         };
         
-        InputType::Integer(vec![])
+        input
     }
 
-    fn get_x(mut pointer: Lines<BufReader<File>>) -> InputType {
-        let mut values: Vec<f64> = vec![];
-        for line in pointer.next() {
-            let value = line
-                .unwrap()
-                .parse::<f64>()
-                .unwrap();
-            values.push(value);
-        }
-        InputType::Float(values)
+    fn first_char_convert(v: String) -> Option<u32> {
+        v.chars()
+            .nth(0)
+            .unwrap()
+            .to_digit(10)
     }
 
-    fn get_y(mut reader: Lines<BufReader<File>>) -> InputType {
-        let mut values: Vec<i32> = vec![];
+    fn get_x(first_item: f64, pointer: Lines<BufReader<File>>) -> InputType {
+        let mut values = vec![first_item];
+    }
 
-        for line in reader.next() {
-            let value = line.unwrap();
-            let v = value
-                .chars()
-                .nth(0)
-                .unwrap()
-                .to_digit(10)
-                .unwrap() as i32; 
-                
+    fn get_y(first_item: u32, pointer: Lines<BufReader<File>>) -> InputType {
+        let mut values: Vec<u32> = vec![first_item];
+
+        for value in pointer.flatten() {
+            let v = Self::first_char_convert(value).unwrap();
             values.push(v);
         }
         log::info!("length of values is {}", values.len());
