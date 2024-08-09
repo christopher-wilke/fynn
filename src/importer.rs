@@ -26,17 +26,18 @@ impl Importer {
     pub fn from_files(input: &str, y_true: &str) -> (FynnArray, InputType) {
         log::trace!("Input: {input}, y_true: {y_true}");
 
-        // // Input
-        // let f_input = File::open(input).expect("could not open file");
-        // let input_val = Self::to_vec(f_input);
+        // Input
+        let f_input = File::open(input).expect("could not open file");
+        let reader = io::BufReader::new(f_input);
+        let input_val = Self::to_vec(reader);
         // let input_out = Self::input_converter(input_val);
 
-        // Y_true
-        let f_y_true = File::open(y_true).expect("could not open file");
-        let reader = io::BufReader::new(f_y_true);
-        let y_true_val = Self::to_vec(reader);
+        // // Y_true
+        // let f_y_true = File::open(y_true).expect("could not open file");
+        // let reader = io::BufReader::new(f_y_true);
+        // let y_true_val = Self::to_vec(reader);
 
-        (FynnArray::new(), y_true_val)
+        (FynnArray::new(), InputType::Integer(vec![]))
     }
 
     pub fn to_vec(mut reader: BufReader<File>) -> InputType {
@@ -52,16 +53,16 @@ impl Importer {
 
         let input = match zeros {
             21 => {
-                let first_prime = Self::first_char_convert(first_el);
+                let first_prime = Self::first_char_to_u32(first_el);
                 Self::get_y(first_prime.unwrap(), pointer)
             },
-            _ => Self::get_y(0, pointer)
+            _ => Self::get_x(0., pointer)
         };
         
         input
     }
 
-    fn first_char_convert(v: String) -> Option<u32> {
+    fn first_char_to_u32(v: String) -> Option<u32> {
         v.chars()
             .nth(0)
             .unwrap()
@@ -69,33 +70,25 @@ impl Importer {
     }
 
     fn get_x(first_item: f64, pointer: Lines<BufReader<File>>) -> InputType {
-        let mut values = vec![first_item];
+        let mut values = vec![];
+
+        for value in pointer.flatten() {
+            log::info!("{}", value);
+        }
+        
+        InputType::Float(values)
     }
 
     fn get_y(first_item: u32, pointer: Lines<BufReader<File>>) -> InputType {
         let mut values: Vec<u32> = vec![first_item];
 
         for value in pointer.flatten() {
-            let v = Self::first_char_convert(value).unwrap();
+            let v = Self::first_char_to_u32(value).unwrap();
             values.push(v);
         }
         log::info!("length of values is {}", values.len());
         InputType::Integer(values)
     }
-        
-        // for line in reader.flatten() {
-        //     for v in line.split_whitespace() {
-        //         // log::info!("v={}", v);
-        //         let num = "0".to_owned();
-        //         let val = match v.parse::<T>() {
-        //             Ok(v) => v,
-        //             Err(e) => { panic!("panic!!! {e:?}") }
-        //         };
-        //         resp.push(val);
-        //     }
-        // }
-        // resp    
-    // }
 
     fn input_converter(values: Vec<f64>) -> FynnArray {
         let mut v: Vec<Point> = vec![];
