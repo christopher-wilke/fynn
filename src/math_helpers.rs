@@ -7,7 +7,7 @@ pub struct MathHelpers;
 
 impl MathHelpers {
 
-    pub fn mean(a: &Vec<usize>, b: &Vec<usize>) -> f64 {
+    pub fn mean(a: &Vec<u32>, b: &Vec<u32>) -> f64 {
         assert!(a.len() == b.len());
 
         let counter: usize = a.iter()
@@ -18,7 +18,7 @@ impl MathHelpers {
         counter as f64 / a.len() as f64
     }
 
-    pub fn argmax(v: FynnArray) -> Vec<usize> {
+    pub fn argmax(v: FynnArray) -> Vec<u32> {
         let mut classes = vec![];
         for i in v.matrix {
             if let Some((highest_el_pos, _)) = i
@@ -26,7 +26,7 @@ impl MathHelpers {
                 .enumerate()
                 .max_by(|a, b| a.1.partial_cmp(b.1).unwrap()) 
             {
-                classes.push(highest_el_pos);
+                classes.push(highest_el_pos as u32);
             }            
         }
         classes

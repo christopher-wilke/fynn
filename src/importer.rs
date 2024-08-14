@@ -10,11 +10,6 @@ pub struct Point {
     pub Y: f64,
 }
 
-pub enum InputType {
-    Integer(Vec<u32>),
-    Float(FynnArray)
-}
-
 #[derive(Clone)]
 pub struct Importer {
     pub v: Vec<Point>,
@@ -23,50 +18,25 @@ pub struct Importer {
 
 impl Importer {
 
-    pub fn from_files(input: &str, y_true: &str) -> (InputType, InputType) {
+    pub fn from_files(input: &str, y_true: &str) -> (FynnArray, Vec<u32>) {
         log::trace!("Input: {input}, y_true: {y_true}");
 
         // Input X
         let f_input = File::open(input).expect("could not open file");
         let reader = io::BufReader::new(f_input);
-        let input_x = Self::to_vec(reader);
+        let x = Self::get_x(reader.lines());
 
         // Input Y
         let f_y_true = File::open(y_true).expect("could not open file");
         let reader = io::BufReader::new(f_y_true);
-        let input_y = Self::to_vec(reader);
+        let y = Self::get_y(reader.lines());
 
-        (input_x, input_y)
+        (x, y)
     }
 
-    pub fn to_vec(mut reader: BufReader<File>) -> InputType {
-
-        let mut first_el = String::new();
-        let _ = reader.read_line(&mut first_el);
-        
-        let pointer = reader.lines();
-        let zeros = first_el
-            .chars()
-            .filter(|c| c == &'0')
-            .count();
-
-        let input = match zeros {
-            21 => {
-                let first_prime = Self::first_char_to_u32(first_el);
-                Self::get_y(first_prime.unwrap(), pointer)
-            },
-            _ => {
-                let first_row = Self::split_by_whitespace(first_el);
-                Self::get_x(first_row, pointer)
-            }
-        };
-        
-        input
-    }
-
-    fn split_by_whitespace(v: String) -> Vec<f64> {
+    fn to_f64_by_whitespace(v: String) -> Vec<f64> {
         v.split_whitespace()
-            .map(|k| k.parse::<f64>().unwrap())
+            .map(|k| k.parse::<f64>().expect("could not parse"))
             .collect()
     }
 
@@ -77,33 +47,27 @@ impl Importer {
             .to_digit(10)
     }
 
-    fn get_x(first_row: Vec<f64>, pointer: Lines<BufReader<File>>) -> InputType {
-        let mut values = vec![first_row[0], first_row[1]];
+    fn get_x(pointer: Lines<BufReader<File>>) -> FynnArray {
+        let mut values = vec![];
 
         for value in pointer.flatten() {
-            for k in Self::split_by_whitespace(value) {
-                
-            }
-            match value.parse::<f64>() {
-                Ok(v) => values.push(v),
-                Err(e) => {
-                    log::error!("{e:?}");
-                }
+            for k in Self::to_f64_by_whitespace(value) {
+                values.push(k);
             }
         }
-        
-        InputType::Float(Self::input_converter(values))
+       
+        Self::input_converter(values)
     }
 
-    fn get_y(first_item: u32, pointer: Lines<BufReader<File>>) -> InputType {
-        let mut values: Vec<u32> = vec![first_item];
+    fn get_y(pointer: Lines<BufReader<File>>) -> Vec<u32> {
+        let mut values: Vec<u32> = vec![];
 
         for value in pointer.flatten() {
             let v = Self::first_char_to_u32(value).unwrap();
             values.push(v);
         }
         log::info!("length of values is {}", values.len());
-        InputType::Integer(values)
+        values
     }
 
     fn input_converter(values: Vec<f64>) -> FynnArray {
