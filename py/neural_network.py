@@ -69,17 +69,11 @@ class Loss_Categorical_Crossentropy(Loss):
         y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
 
         if len(y_true.shape) == 1:
-            # print('Shape=1')
-            # print(y_true)
-            # print(y_pred_clipped)
             correct_confidences = y_pred_clipped[
                 range(samples),
                 y_true
             ]
-            # print(y_pred_clipped)
-            # print(correct_confidences)
         elif len(y_true.shape) == 2:
-            # print('Shape=2')
             correct_confidences = np.sum(
                 y_pred_clipped*y_true, axis=1
             )
@@ -96,26 +90,25 @@ np.savetxt('out_Y.txt', y)
 # Create model
 dense1 = Layer_Dense(2, 3)
 dense1.forward(X)
+print(dense1.output)
 
-activation1 = Activation_ReLU()
-activation1.forward(dense1.output)
+# activation1 = Activation_ReLU()
+# activation1.forward(dense1.output)
 
-# print(activation1.output)
-dense2 = Layer_Dense(3, 3)
-activation2 = Activation_Softmax()
+# # print(activation1.output)
+# dense2 = Layer_Dense(3, 3)
+# activation2 = Activation_Softmax()
 
-# Create Loss Function
-loss_function = Loss_Categorical_Crossentropy()
+# # Create Loss Function
+# loss_function = Loss_Categorical_Crossentropy()
 
-dense2.forward(activation1.output)
-activation2.forward(dense2.output)
+# dense2.forward(activation1.output)
+# activation2.forward(dense2.output)
 
-loss =loss_function.calculate(activation2.output, y)
+# loss =loss_function.calculate(activation2.output, y)
 
-# calculate accuracy
-predictions = np.argmax(activation2.output, axis=1)
-print('predictions:', predictions)
-print('y:', y)
+# # calculate accuracy
+# predictions = np.argmax(activation2.output, axis=1)
 # accuracy = np.mean(predictions == y)
 
 # print('New set of weights found:', 'loss: ', loss, 'acc: ', accuracy)
