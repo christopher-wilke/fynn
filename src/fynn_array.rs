@@ -2,6 +2,7 @@ use std::{fmt::Debug, usize};
 
 use rand::prelude::*;
 use rand_distr::StandardNormal;
+use rand_distr::{Normal, Distribution};
 use crate::Point;
 
 #[derive(Clone)]
@@ -85,7 +86,8 @@ impl FynnArray {
         for _ in 0..h {
             let mut row = vec![];
             for _ in 0..w {
-                let val: f64 = thread_rng().sample(StandardNormal);
+                let normal = Normal::new(0., 1.).unwrap();
+                let val: f64 = normal.sample(&mut thread_rng());
                 row.push(val);
             }
             matrix.push(row);
@@ -173,7 +175,7 @@ impl std::ops::Add<&[f64]> for FynnArray {
         for row in self.matrix {
             let mut new_row = vec![];
             for (idx, val) in row.iter().enumerate() {
-                let value: f64 = format!("{:.5}", val + rhs[idx]).parse().unwrap();
+                let value: f64 = format!("{:.9}", val + rhs[idx]).parse().unwrap();
                 new_row.push(value);
             }
             matrix.push(new_row);
@@ -190,5 +192,19 @@ impl Debug for FynnArray {
             out.push_str(format!("{:?}\n", val).as_str());
         }
         write!(f, "\n{}", out)
+    }
+}
+
+impl std::ops::AddAssign for FynnArray {
+    fn add_assign(&mut self, rhs: Self) {
+        self.matrix = self.matrix.iter()
+            .zip(rhs.matrix.iter())
+            .map(|(v1, v2)| {
+                v1.iter()
+                    .zip(v2.iter())
+                    .map(|(k1, k2)| k1 + k2)
+                    .collect()
+            })
+            .collect();
     }
 }

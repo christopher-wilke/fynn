@@ -90,42 +90,43 @@ np.savetxt('out_Y.txt', y)
 # Create model
 dense1 = Layer_Dense(2, 3)
 dense1.forward(X)
-print(dense1.output)
 
-# activation1 = Activation_ReLU()
-# activation1.forward(dense1.output)
+activation1 = Activation_ReLU()
+activation1.forward(dense1.output)
 
-# # print(activation1.output)
-# dense2 = Layer_Dense(3, 3)
-# activation2 = Activation_Softmax()
+dense2 = Layer_Dense(3, 3)
+activation2 = Activation_Softmax()
 
-# # Create Loss Function
-# loss_function = Loss_Categorical_Crossentropy()
+# Create Loss Function
+loss_function = Loss_Categorical_Crossentropy()
+dense2.forward(activation1.output)
+activation2.forward(dense2.output)
 
-# dense2.forward(activation1.output)
-# activation2.forward(dense2.output)
+loss =loss_function.calculate(activation2.output, y)
 
-# loss =loss_function.calculate(activation2.output, y)
-
-# # calculate accuracy
-# predictions = np.argmax(activation2.output, axis=1)
+# calculate accuracy
+predictions = np.argmax(activation2.output, axis=1)
 # accuracy = np.mean(predictions == y)
 
+# print(f'activation2_out: {activation2.output}')
+# print(f'predictions: {predictions}')
+
 # print('New set of weights found:', 'loss: ', loss, 'acc: ', accuracy)
-# # Helpers
-# lowest_loss = 99999999
-# best_dense1_weights = dense1.weights.copy()
-# best_dense1_biases = dense1.biases.copy()
-# best_dense2_weights = dense2.weights.copy()
-# best_dense2_biases = dense2.biases.copy()
+# Helpers
+lowest_loss = 99999999
+best_dense1_weights = dense1.weights.copy()
+best_dense1_biases = dense1.biases.copy()
+best_dense2_weights = dense2.weights.copy()
+best_dense2_biases = dense2.biases.copy()
 
-# for iteration in range(1000):
+for iteration in range(1):
 
-#     # Update weights with some small random values
-#     dense1.weights += 0.5*np.random.randn(2, 3)
-#     dense1.biases += np.random.rand(1, 3)
-#     dense2.weights += 0.5*np.random.randn(3, 3)
-#     dense2.biases += 0.5*np.random.randn(1, 3)
+    # Update weights with some small random values
+    dense1.weights += 0.5*np.random.randn(2, 3)
+    dense1.biases += np.random.rand(1, 3)
+    print(f'dense1.biases={dense1.biases}')
+    dense2.weights += 0.5*np.random.randn(3, 3)
+    dense2.biases += 0.5*np.random.randn(1, 3)
 
 #     # Perform a forward pass of our training data
 #     dense1.forward(X)

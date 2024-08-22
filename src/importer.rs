@@ -66,7 +66,6 @@ impl Importer {
             let v = Self::first_char_to_u32(value).unwrap();
             values.push(v);
         }
-        log::info!("length of values is {}", values.len());
         values
     }
 
