@@ -119,38 +119,37 @@ best_dense1_biases = dense1.biases.copy()
 best_dense2_weights = dense2.weights.copy()
 best_dense2_biases = dense2.biases.copy()
 
-for iteration in range(1):
+for iteration in range(1000):
 
     # Update weights with some small random values
     dense1.weights += 0.5*np.random.randn(2, 3)
     dense1.biases += np.random.rand(1, 3)
-    print(f'dense1.biases={dense1.biases}')
     dense2.weights += 0.5*np.random.randn(3, 3)
     dense2.biases += 0.5*np.random.randn(1, 3)
 
-#     # Perform a forward pass of our training data
-#     dense1.forward(X)
-#     activation1.forward(dense1.output)
-#     dense2.forward(activation1.output)
-#     activation2.forward(dense2.output)
+    # Perform a forward pass of our training data
+    dense1.forward(X)
+    activation1.forward(dense1.output)
+    dense2.forward(activation1.output)
+    activation2.forward(dense2.output)
     
-#     # return loss
-#     loss =loss_function.calculate(activation2.output, y)
+    # return loss
+    loss =loss_function.calculate(activation2.output, y)
 
-#     # calculate accuracy
-#     predictions = np.argmax(activation2.output, axis=1)
-#     accuracy = np.mean(predictions == y)
+    # calculate accuracy
+    predictions = np.argmax(activation2.output, axis=1)
+    accuracy = np.mean(predictions == y)
 
-#     # If loss is smaller, print and save weights
-#     if loss < lowest_loss:
-#         print('New set of weights found, iteration: ', iteration, 'loss: ', loss, 'acc: ', accuracy)
-#         best_dense1_weights = dense1.weights.copy()
-#         best_dense1_biases = dense1.biases.copy()
-#         best_dense2_weights = dense2.weights.copy()
-#         best_dense2_biases = dense2.biases.copy()
-#         lowest_loss = loss
-#     else:
-#         dense1.weights = best_dense1_weights.copy()
-#         dense1.biases = best_dense1_biases.copy()
-#         dense2.weights = best_dense2_weights.copy()
-#         dense2.biases = best_dense2_biases.copy()
+    # If loss is smaller, print and save weights
+    if loss < lowest_loss:
+        print('New set of weights found, iteration: ', iteration, 'loss: ', loss, 'acc: ', accuracy)
+        best_dense1_weights = dense1.weights.copy()
+        best_dense1_biases = dense1.biases.copy()
+        best_dense2_weights = dense2.weights.copy()
+        best_dense2_biases = dense2.biases.copy()
+        lowest_loss = loss
+    else:
+        dense1.weights = best_dense1_weights.copy()
+        dense1.biases = best_dense1_biases.copy()
+        dense2.weights = best_dense2_weights.copy()
+        dense2.biases = best_dense2_biases.copy()

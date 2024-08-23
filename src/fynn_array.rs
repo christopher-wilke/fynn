@@ -3,6 +3,7 @@ use std::{fmt::Debug, usize};
 use rand::prelude::*;
 use rand_distr::StandardNormal;
 use rand_distr::{Normal, Distribution};
+use crate::fynn_bias::FynnBias;
 use crate::Point;
 
 #[derive(Clone)]
@@ -97,7 +98,10 @@ impl FynnArray {
 
     /// Returns 2d-dimensions in (width, height)
     pub fn get_dim(&self) -> (usize, usize) {
-        (*(&self.matrix[0].len()), *(&self.matrix.len()))
+        match &self.matrix.len() {
+            0 =>  return (0, 0),
+            _ => return (*(&self.matrix[0].len()), *(&self.matrix.len()))
+        };
     }
 
     pub fn transpose(mut self) -> Self {
@@ -167,19 +171,20 @@ impl std::ops::Div<FynnArray> for Vec<Vec<f64>> {
     }
 }
 
-impl std::ops::Add<&[f64]> for FynnArray {
+impl std::ops::Add<&FynnBias> for FynnArray {
     type Output = FynnArray;
 
-    fn add(self, rhs: &[f64]) -> Self::Output {
+    fn add(self, rhs: &FynnBias) -> Self::Output {
         let mut matrix = vec![];
-        for row in self.matrix {
-            let mut new_row = vec![];
-            for (idx, val) in row.iter().enumerate() {
-                let value: f64 = format!("{:.9}", val + rhs[idx]).parse().unwrap();
-                new_row.push(value);
-            }
-            matrix.push(new_row);
-        }
+        // log::info!("todo: impl add fct");
+        // for row in self.matrix {
+        //     let mut new_row = vec![];
+        //     for (idx, val) in row.iter().enumerate() {
+        //         let value: f64 = format!("{:.9}", val + rhs[idx]).parse().unwrap();
+        //         new_row.push(value);
+        //     }
+        //     matrix.push(new_row);
+        // }
 
         FynnArray { matrix }
     }

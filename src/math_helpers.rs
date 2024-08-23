@@ -1,5 +1,6 @@
 use rand::Rng;
 
+use crate::fynn_bias::FynnBias;
 use crate::FynnArray;
 use crate::FynnBehavior;
 
@@ -8,7 +9,7 @@ pub struct MathHelpers;
 impl MathHelpers {
 
     pub fn mean(a: &Vec<u32>, b: &Vec<u32>) -> f64 {
-        assert!(a.len() == b.len());
+        // assert!(a.len() == b.len());
 
         let counter: usize = a.iter()
             .zip(b.iter())
@@ -48,7 +49,7 @@ impl MathHelpers {
     }
 
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
-        assert!(inputs.get_dim().0 == weights.get_dim().1);
+        // assert!(inputs.get_dim().0 == weights.get_dim().1);
 
         let w = *(&weights.get_dim().0) as u32;
         let h = *(&inputs.get_dim().1) as u32;
@@ -109,12 +110,12 @@ impl MathHelpers {
             .collect()
     }
 
-    pub fn rand_biases(w: usize) -> Vec<f64> {
-        let mut v = vec![];
+    pub fn rand_biases(w: usize) -> FynnBias {
+        let mut val = vec![];
         let mut rng = rand::thread_rng();
         for _ in 0..w {
-            v.push(rng.gen_range(0.000001..1.99999));
+            val.push(rng.gen_range(0.000001..1.99999));
         }
-        v 
+        FynnBias { val }
     }
 }

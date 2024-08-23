@@ -5,7 +5,6 @@ pub struct LossCategoricalCrossentropy;
 
 impl Loss for LossCategoricalCrossentropy {
 
-    // todo: add support for y_true to be multidimensional
     fn calculate(y_pred: &mut FynnArray, y_true: Vec<u32>) -> f64 {
         let y_pred_clipped = MathHelpers::clip(y_pred, 0.0000001, 0.9999999);
 
