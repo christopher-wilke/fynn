@@ -5,16 +5,13 @@ pub struct FynnBias {
 
 impl std::ops::AddAssign for FynnBias {
     fn add_assign(&mut self, rhs: Self) {
-        log::info!("self={:?}", self);
-        log::info!("rhs={:?}", rhs);
-        // self.val = self.val.iter()
-        //     .zip(rhs.val.iter())
-        //     .map(|(v1, v2)| {
-                
-        //     })
+        self.val = self.val
+            .iter()
+            .zip(rhs.val.iter())
+            .map(|(x, y)| x+y)
+            .collect();
     }
 }
-
 
 // impl std::ops::AddAssign for FynnArray {
 //     fn add_assign(&mut self, rhs: Self) {
