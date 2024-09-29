@@ -49,7 +49,7 @@ impl MathHelpers {
     }
 
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
-        // assert!(inputs.get_dim().0 == weights.get_dim().1);
+        assert!(inputs.get_dim().0 == weights.get_dim().1);
 
         let w = *(&weights.get_dim().0) as u32;
         let h = *(&inputs.get_dim().1) as u32;
@@ -70,7 +70,6 @@ impl MathHelpers {
             }
             out.push(row);
         }
-
         out.to_fynn_array()
     }
      

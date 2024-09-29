@@ -175,6 +175,9 @@ impl std::ops::Add<&FynnBias> for FynnArray {
     type Output = FynnArray;
 
     fn add(self, rhs: &FynnBias) -> Self::Output {
+        log::info!("now debugging add operator");
+        log::info!("{:?}", &self);
+        log::info!("{:?}", rhs);
         let mut matrix = vec![];
         // log::info!("todo: impl add fct");
         // for row in self.matrix {

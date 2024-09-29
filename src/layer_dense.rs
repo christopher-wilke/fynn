@@ -19,6 +19,7 @@ impl LayerDense {
     }
 
     pub fn fwd(&self, inputs: &FynnArray) -> FynnArray {
-        MathHelpers::dot(&inputs, &(self.weights)) + &(self.biases)
+         MathHelpers::dot(&inputs, &(self.weights)) + &(self.biases)
+         // MathHelpers::dot(&inputs, &(self.weights)) 
     }
 }
