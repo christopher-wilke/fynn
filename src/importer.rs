@@ -1,5 +1,8 @@
 use std::{
-    any::Any, fmt::Debug, fs::File, io::{self, BufRead, BufReader, Lines}
+    any::Any,
+    fmt::Debug,
+    fs::File,
+    io::{self, BufRead, BufReader, Lines},
 };
 
 use crate::{FynnArray, FynnBehavior};
@@ -13,11 +16,10 @@ pub struct Point {
 #[derive(Clone)]
 pub struct Importer {
     pub v: Vec<Point>,
-    pub y_true: Vec<u32>
+    pub y_true: Vec<u32>,
 }
 
 impl Importer {
-
     pub fn from_files(input: &str, y_true: &str) -> (FynnArray, Vec<u32>) {
         log::trace!("Input: {input}, y_true: {y_true}");
 
@@ -41,10 +43,7 @@ impl Importer {
     }
 
     fn first_char_to_u32(v: String) -> Option<u32> {
-        v.chars()
-            .nth(0)
-            .unwrap()
-            .to_digit(10)
+        v.chars().nth(0).unwrap().to_digit(10)
     }
 
     fn get_x(pointer: Lines<BufReader<File>>) -> FynnArray {
@@ -55,7 +54,7 @@ impl Importer {
                 values.push(k);
             }
         }
-       
+
         Self::input_converter(values)
     }
 
@@ -71,7 +70,7 @@ impl Importer {
 
     fn input_converter(values: Vec<f64>) -> FynnArray {
         let mut v: Vec<Point> = vec![];
-        
+
         for chunk in values.chunks(2) {
             if let [x, y] = chunk {
                 v.push(Point { X: *x, Y: *y });
@@ -80,7 +79,4 @@ impl Importer {
 
         v.to_fynn_array()
     }
-
 }
-
-

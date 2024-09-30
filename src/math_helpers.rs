@@ -1,3 +1,4 @@
+use rand::distributions::Weight;
 use rand::Rng;
 
 use crate::fynn_bias::FynnBias;
@@ -7,15 +8,15 @@ use crate::FynnBehavior;
 pub struct MathHelpers;
 
 impl MathHelpers {
-
     pub fn mean(a: &Vec<u32>, b: &Vec<u32>) -> f64 {
         // assert!(a.len() == b.len());
 
-        let counter: usize = a.iter()
+        let counter: usize = a
+            .iter()
             .zip(b.iter())
             .filter(|&(a_v, b_v)| a_v == b_v)
             .count();
-        
+
         counter as f64 / a.len() as f64
     }
 
@@ -25,79 +26,62 @@ impl MathHelpers {
             if let Some((highest_el_pos, _)) = i
                 .iter()
                 .enumerate()
-                .max_by(|a, b| a.1.partial_cmp(b.1).unwrap()) 
+                .max_by(|a, b| a.1.partial_cmp(b.1).unwrap())
             {
                 classes.push(highest_el_pos as u32);
-            }            
+            }
         }
         classes
-     }
-    
+    }
+
     pub fn clip(input: &mut FynnArray, min: f64, max: f64) -> Vec<Vec<f64>> {
         input
             .matrix
             .iter_mut()
-            .map(|row| {
-                row
-                    .iter_mut()
-                    .map(|v| {
-                        v.clamp(min, max)
-                    })
-                    .collect()
-            })
+            .map(|row| row.iter_mut().map(|v| v.clamp(min, max)).collect())
             .collect()
     }
 
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
-        assert!(inputs.get_dim().0 == weights.get_dim().1);
-
-        let w = *(&weights.get_dim().0) as u32;
-        let h = *(&inputs.get_dim().1) as u32;
-        let mut out = vec![];
-
-        for i in 0..h {
+        let mut res = vec![];
+        for (current_input, w) in inputs.matrix.iter().zip(weights.matrix.iter()) {
             let mut row = vec![];
-            let mut weight_row_idx = 0;
-            for _ in 0..w {
-                let mut weight_col_idx: usize = 0;
-                let mut res = 0.;
-                for val in (&inputs).matrix[i as usize].iter() {
-                    res += val * (&weights).matrix[weight_col_idx][weight_row_idx];
-                    weight_col_idx += 1;
+            for i in 0..w.len() - 1 {
+                let mut sum = 0.;
+                for (k, v) in current_input.iter().zip(weights.matrix[i].iter()) {
+                    sum += k * v;
                 }
-                weight_row_idx += 1;
-                row.push(res);
+                // Rounding by avoiding String casting using format!()
+                row.push((sum*100.).round() / 100.);
             }
-            out.push(row);
+            res.push(row);
         }
-        out.to_fynn_array()
+        res.to_fynn_array()
     }
-     
+
     // keepdimis=True, axis=1
     pub fn sum(input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
         input
             .iter()
             .map(|row| {
                 let sum = row.iter().sum::<f64>();
-                vec![sum]   
+                vec![sum]
             })
             .collect()
     }
 
     // keepdims = True, axis=1
     pub fn max(input: &FynnArray) -> Vec<Vec<f64>> {
-        input.matrix
+        input
+            .matrix
             .iter()
             .map(|row| {
-                let max = row.iter().fold(
-                    f64::NEG_INFINITY, 
-                    |a, &b| a.max(b)
-                );
+                let max = row.iter().fold(f64::NEG_INFINITY, |a, &b| a.max(b));
                 vec![max]
             })
             .collect()
     }
-    
+
     pub fn exp(val: &FynnArray) -> Vec<Vec<f64>> {
         val.matrix
             .iter()

@@ -1,10 +1,10 @@
 use std::{fmt::Debug, usize};
 
-use rand::prelude::*;
-use rand_distr::StandardNormal;
-use rand_distr::{Normal, Distribution};
 use crate::fynn_bias::FynnBias;
 use crate::Point;
+use rand::prelude::*;
+use rand_distr::StandardNormal;
+use rand_distr::{Distribution, Normal};
 
 #[derive(Clone)]
 pub struct FynnArray {
@@ -17,15 +17,10 @@ pub trait FynnBehavior {
 
 impl FynnBehavior for Vec<Point> {
     fn to_fynn_array(self) -> FynnArray {
-        let matrix: Vec<Vec<f64>> = self.iter()
-            .map(|p| vec![p.X, p.Y])
-            .collect();
+        let matrix: Vec<Vec<f64>> = self.iter().map(|p| vec![p.X, p.Y]).collect();
 
-        FynnArray {
-            matrix
-        }
+        FynnArray { matrix }
     }
-    
 }
 
 impl FynnBehavior for Vec<Vec<f64>> {
@@ -63,13 +58,10 @@ impl<T: Into<f64> + Copy, const N: usize> FynnBehavior for &[[T; N]] {
 }
 
 impl FynnArray {
-
     pub fn new() -> Self {
-        Self {
-            matrix: vec![]
-        }
+        Self { matrix: vec![] }
     }
-    
+
     pub fn zeros(h: usize, w: usize) -> Self {
         let mut matrix = vec![];
         for _ in 0..h {
@@ -99,8 +91,8 @@ impl FynnArray {
     /// Returns 2d-dimensions in (width, height)
     pub fn get_dim(&self) -> (usize, usize) {
         match &self.matrix.len() {
-            0 =>  return (0, 0),
-            _ => return (*(&self.matrix[0].len()), *(&self.matrix.len()))
+            0 => return (0, 0),
+            _ => return (*(&self.matrix[0].len()), *(&self.matrix.len())),
         };
     }
 
@@ -122,7 +114,7 @@ impl std::ops::Mul<FynnArray> for f64 {
     fn mul(self, rhs: FynnArray) -> Self::Output {
         rhs.matrix
             .iter()
-            .map(|i| i.iter().map(|&val| self*val).collect())
+            .map(|i| i.iter().map(|&val| self * val).collect())
             .collect::<Vec<Vec<f64>>>()
             .to_fynn_array()
     }
@@ -134,10 +126,7 @@ impl std::ops::Sub<&Vec<Vec<f64>>> for &FynnArray {
     fn sub(self, rhs: &Vec<Vec<f64>>) -> Self::Output {
         let mut matrix = Vec::new();
 
-        for (i, v) in self.matrix
-            .iter()
-            .enumerate() 
-        {
+        for (i, v) in self.matrix.iter().enumerate() {
             let mut new_row = Vec::new();
             let su = rhs.get(i).unwrap().get(0).unwrap();
             for val in v {
@@ -156,14 +145,11 @@ impl std::ops::Div<FynnArray> for Vec<Vec<f64>> {
 
     fn div(self, rhs: FynnArray) -> Self::Output {
         let mut fa = FynnArray::new();
-    
-        for (val, sum) in self
-            .iter()
-            .zip(rhs.matrix.iter()) 
-        {
+
+        for (val, sum) in self.iter().zip(rhs.matrix.iter()) {
             let mut arr = vec![];
             for v in val {
-                arr.push(*v/sum.get(0).unwrap());
+                arr.push(*v / sum.get(0).unwrap());
             }
             fa.matrix.push(arr);
         }
@@ -205,14 +191,11 @@ impl Debug for FynnArray {
 
 impl std::ops::AddAssign for FynnArray {
     fn add_assign(&mut self, rhs: Self) {
-        self.matrix = self.matrix.iter()
+        self.matrix = self
+            .matrix
+            .iter()
             .zip(rhs.matrix.iter())
-            .map(|(v1, v2)| {
-                v1.iter()
-                    .zip(v2.iter())
-                    .map(|(k1, k2)| k1 + k2)
-                    .collect()
-            })
+            .map(|(v1, v2)| v1.iter().zip(v2.iter()).map(|(k1, k2)| k1 + k2).collect())
             .collect();
     }
 }

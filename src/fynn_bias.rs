@@ -1,14 +1,15 @@
 #[derive(Debug, Clone)]
 pub struct FynnBias {
-    pub val: Vec<f64>
+    pub val: Vec<f64>,
 }
 
 impl std::ops::AddAssign for FynnBias {
     fn add_assign(&mut self, rhs: Self) {
-        self.val = self.val
+        self.val = self
+            .val
             .iter()
             .zip(rhs.val.iter())
-            .map(|(x, y)| x+y)
+            .map(|(x, y)| x + y)
             .collect();
     }
 }
@@ -26,4 +27,3 @@ impl std::ops::AddAssign for FynnBias {
 //             .collect();
 //     }
 // }
-
