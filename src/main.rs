@@ -12,25 +12,28 @@ use importer::*;
 use layer_dense::LayerDense;
 use math_helpers::*;
 
-use crate::loss::{categorical_crossentropy::LossCategoricalCrossentropy, Loss};
+use crate::{fynn_bias::FynnBias, loss::{categorical_crossentropy::LossCategoricalCrossentropy, Loss}};
 
 pub fn main() {
     env_logger::init();
 
     let (input, y_true) = Importer::from_files("py/out.txt", "py/out_Y.txt");
 
-    // Testing Add Functionality
-    let input = vec![[1., 2., 3., 2.5], [2., 5., -1., 2.], [-1.5, 2.7, 3.3, -0.8]].to_fynn_array();
+    // // Testing Add Functionality
+    // let input = vec![[1., 2., 3., 2.5], [2., 5., -1., 2.], [-1.5, 2.7, 3.3, -0.8]].to_fynn_array();
 
-    let weight = vec![
-        [0.2, 0.8, -0.5, 1.],
-        [0.5, -0.91, 0.26, -0.5],
-        [-0.26, -0.27, 0.17, 0.87],
-    ]
-    .to_fynn_array();
+    // let weight = vec![
+    //     [0.2, 0.8, -0.5, 1.],
+    //     [0.5, -0.91, 0.26, -0.5],
+    //     [-0.26, -0.27, 0.17, 0.87],
+    // ]
+    // .to_fynn_array();
 
-    let res = MathHelpers::dot(&input, &weight);
-    log::info!("res={res:?}");
+    // let biases = FynnBias { val: vec![2., 3., 0.5] };
+
+    // let res = MathHelpers::dot(&input, &weight);
+    // let sum = res + &biases;
+    // log::info!("sum={sum:?}");
 
     // Layer 1
     // let mut dense1 = LayerDense::new(2, 3);

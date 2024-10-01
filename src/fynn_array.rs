@@ -1,3 +1,4 @@
+use std::sync::RwLockWriteGuard;
 use std::{fmt::Debug, usize};
 
 use crate::fynn_bias::FynnBias;
@@ -160,21 +161,16 @@ impl std::ops::Div<FynnArray> for Vec<Vec<f64>> {
 impl std::ops::Add<&FynnBias> for FynnArray {
     type Output = FynnArray;
 
+    // this can probably get refactored
     fn add(self, rhs: &FynnBias) -> Self::Output {
-        log::info!("now debugging add operator");
-        log::info!("{:?}", &self);
-        log::info!("{:?}", rhs);
         let mut matrix = vec![];
-        // log::info!("todo: impl add fct");
-        // for row in self.matrix {
-        //     let mut new_row = vec![];
-        //     for (idx, val) in row.iter().enumerate() {
-        //         let value: f64 = format!("{:.9}", val + rhs[idx]).parse().unwrap();
-        //         new_row.push(value);
-        //     }
-        //     matrix.push(new_row);
-        // }
-
+        for row in self.matrix {
+            let mut new_row = vec![];
+            for (w, b) in row.iter().zip(rhs.val.iter()) {
+                new_row.push(((w+b)*100.).round()/100.);
+            }
+            matrix.push(new_row);
+        }
         FynnArray { matrix }
     }
 }

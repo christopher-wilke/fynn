@@ -42,6 +42,7 @@ impl MathHelpers {
             .collect()
     }
 
+    // math tells to transpose the weight. I cannot see the advantage so I am using the non-transposed vec.
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
         let mut res = vec![];
         for (current_input, w) in inputs.matrix.iter().zip(weights.matrix.iter()) {
@@ -51,8 +52,8 @@ impl MathHelpers {
                 for (k, v) in current_input.iter().zip(weights.matrix[i].iter()) {
                     sum += k * v;
                 }
-                // Rounding by avoiding String casting using format!()
-                row.push((sum*100.).round() / 100.);
+                // Rounding by 3 digits avoiding String casting using format!()
+                row.push((sum*1000.).round() / 1000.);
             }
             res.push(row);
         }
