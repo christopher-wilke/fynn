@@ -19,33 +19,32 @@ pub fn main() {
 
     let (input, y_true) = Importer::from_files("py/out.txt", "py/out_Y.txt");
 
-    // // Testing Add Functionality
-    // let input = vec![[1., 2., 3., 2.5], [2., 5., -1., 2.], [-1.5, 2.7, 3.3, -0.8]].to_fynn_array();
+    // Testing Input
+    let input = vec![
+        vec![0.17640523612499237, 0.5978738069534302],
+        vec![0.040015723556280136, 0.7240893244743347]
+    ].to_fynn_array();
 
-    // let weight = vec![
-    //     [0.2, 0.8, -0.5, 1.],
-    //     [0.5, -0.91, 0.26, -0.5],
-    //     [-0.26, -0.27, 0.17, 0.87],
-    // ]
-    // .to_fynn_array();
+    let weights = vec![
+        vec![0.002473880972289464, 0.014895691422809047, -0.0044469715755695045],
+        vec![0.008707085360891076, -0.0064183642832156855, -0.0018901445751785932]
+    ].to_fynn_array();
 
-    // let biases = FynnBias { val: vec![2., 3., 0.5] };
-
-    // let res = MathHelpers::dot(&input, &weight);
-    // let sum = res + &biases;
-    // log::info!("sum={sum:?}");
-
+    let result = MathHelpers::dot(&input, &weights);
+    log::info!("{:?}", result);
+    
     // Layer 1
     // let mut dense1 = LayerDense::new(2, 3);
     // let out_dense_1 = dense1.fwd(&input);
-    // log::info!("{out_dense_1:?}");
-    // log::info!("{out_dense_1:?}");
+    // log::info!("out_dense_1: {:?}", out_dense_1);
     // let activation1 = ActivationReLU::forward(&out_dense_1);
 
     // // Layer 2
-    // let mut dense2 = LayerDense::new(3, 3);
+    // let mut dense2 = LayerDense::new(input.matrix.len(), 3);
     // let out_dense_2 = dense2.fwd(&activation1);
     // let activation2 = ActivationSoftmax::forward(&out_dense_2);
+
+    // log::info!("{activation2:?}");
 
     // // Helper Vars
     // let mut lowest_loss = 9999999.;

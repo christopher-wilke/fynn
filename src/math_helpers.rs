@@ -44,20 +44,46 @@ impl MathHelpers {
 
     // math tells to transpose the weight. I cannot see the advantage so I am using the non-transposed vec.
     pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
-        let mut res = vec![];
-        for (current_input, w) in inputs.matrix.iter().zip(weights.matrix.iter()) {
+        let mut result = vec![];
+
+        for input_idx in 0..inputs.matrix.len() {
             let mut row = vec![];
-            for i in 0..w.len() - 1 {
-                let mut sum = 0.;
-                for (k, v) in current_input.iter().zip(weights.matrix[i].iter()) {
-                    sum += k * v;
+            for weight_idx in 0..weights.matrix[0].len() {
+                let mut current_idx: usize = 0;
+                let mut current_sum: f64 = 0.;
+                for i in 0..inputs.matrix[input_idx].len() {
+                    current_sum += inputs.matrix[input_idx][current_idx]*weights.matrix[i][weight_idx];
+                    current_idx += 1; 
                 }
-                // Rounding by 3 digits avoiding String casting using format!()
-                row.push((sum*1000.).round() / 1000.);
+                row.push(current_sum);
             }
-            res.push(row);
+            result.push(row);
         }
-        res.to_fynn_array()
+        result.to_fynn_array()
+
+// poissble refactoring
+//         pub fn dot(inputs: &FynnArray, weights: &FynnArray) -> FynnArray {
+//     let mut result = Vec::with_capacity(inputs.matrix.len());
+
+//     for input_row in &inputs.matrix {
+//         let mut row = Vec::with_capacity(weights.matrix[0].len());
+
+//         for weight_col_idx in 0..weights.matrix[0].len() {
+//             let current_sum: f64 = input_row
+//                 .iter()
+//                 .zip(weights.matrix.iter())
+//                 .map(|(input_val, weight_row)| input_val * weight_row[weight_col_idx])
+//                 .sum();
+
+//             row.push(current_sum);
+//         }
+
+//         result.push(row);
+//     }
+
+//     result.to_fynn_array()
+// }
+
     }
 
     // keepdimis=True, axis=1
