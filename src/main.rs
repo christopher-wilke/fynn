@@ -18,26 +18,13 @@ pub fn main() {
     env_logger::init();
 
     let (input, y_true) = Importer::from_files("py/out.txt", "py/out_Y.txt");
-
-    // Testing Input
-    let input = vec![
-        vec![0.17640523612499237, 0.5978738069534302],
-        vec![0.040015723556280136, 0.7240893244743347]
-    ].to_fynn_array();
-
-    let weights = vec![
-        vec![0.002473880972289464, 0.014895691422809047, -0.0044469715755695045],
-        vec![0.008707085360891076, -0.0064183642832156855, -0.0018901445751785932]
-    ].to_fynn_array();
-
-    let result = MathHelpers::dot(&input, &weights);
-    log::info!("{:?}", result);
     
     // Layer 1
-    // let mut dense1 = LayerDense::new(2, 3);
-    // let out_dense_1 = dense1.fwd(&input);
-    // log::info!("out_dense_1: {:?}", out_dense_1);
-    // let activation1 = ActivationReLU::forward(&out_dense_1);
+    let mut dense1 = LayerDense::new(2, 3);
+    let out_dense_1 = dense1.fwd(&input);
+    let activation1 = ActivationReLU::forward(&out_dense_1);
+
+    log::info!("{:?}", out_dense_1);
 
     // // Layer 2
     // let mut dense2 = LayerDense::new(input.matrix.len(), 3);

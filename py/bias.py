@@ -11,6 +11,8 @@ weights = np.array([
     [0.008707085360891076, -0.0064183642832156855, -0.0018901445751785932]
 ])
 
+bias = np.array([1.0, 2.0, 3.0])
+
 # Perform matrix multiplication
-result = np.dot(inputs, weights)
+result = np.dot(inputs, weights) + bias
 print(result)

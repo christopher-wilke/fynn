@@ -165,11 +165,12 @@ impl std::ops::Add<&FynnBias> for FynnArray {
     fn add(self, rhs: &FynnBias) -> Self::Output {
         let mut matrix = vec![];
         for row in self.matrix {
-            let mut new_row = vec![];
-            for (w, b) in row.iter().zip(rhs.val.iter()) {
-                new_row.push(((w+b)*100.).round()/100.);
+            let mut r = vec![];
+            for (i, j) in row.iter().enumerate() {
+                let val = j + rhs.val[i];
+                r.push(val);
             }
-            matrix.push(new_row);
+            matrix.push(r);
         }
         FynnArray { matrix }
     }
