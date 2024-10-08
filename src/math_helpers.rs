@@ -124,7 +124,7 @@ impl MathHelpers {
         let mut val = vec![];
         let mut rng = rand::thread_rng();
         for _ in 0..w {
-            val.push(rng.gen_range(0.000001..1.99999));
+            val.push(rng.gen_range(0.000001..0.99999));
         }
         FynnBias { val }
     }
