@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::{borrow::BorrowMut, fmt::Debug};
 
 use crate::{fynn_bias::FynnBias, FynnArray, MathHelpers};
 
@@ -19,7 +19,6 @@ impl LayerDense {
     }
 
     pub fn fwd(&self, inputs: &FynnArray) -> FynnArray {
-        // MathHelpers::dot(&inputs, &(self.weights)) + &(self.biases)
-        MathHelpers::dot(&inputs, &(self.weights))
+        MathHelpers::dot(&inputs, &(self.weights)) + &self.biases
     }
 }

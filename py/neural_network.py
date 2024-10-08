@@ -25,9 +25,6 @@ class Layer_Dense:
 
     # Forward Pass
     def forward(self, inputs):
-        print(f'inputs={inputs}')
-        print(f'self.weights={self.weights}')
-        print(f'np.dot={np.dot(inputs, self.weights)}')
         self.output = np.dot(inputs, self.weights) + self.biases
 
 # ReLu Activation
@@ -85,7 +82,7 @@ class Loss_Categorical_Crossentropy(Loss):
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
 
-X, y = vertical_data(samples=2, classes=1)
+X, y = vertical_data(samples=10, classes=1)
 
 np.savetxt('out.txt', X)
 np.savetxt('out_Y.txt', y)
@@ -93,12 +90,12 @@ np.savetxt('out_Y.txt', y)
 dense1 = Layer_Dense(2, 3)
 dense1.forward(X)
 
-# print(f'X={X[0]}')
-# print(f'weight={dense1.weights}')
-# print(f'dense1.output={dense1.output[0]}')
+print(dense1.output)
 
 # activation1 = Activation_ReLU()
 # activation1.forward(dense1.output)
+
+# print(activation1.output)
 
 # dense2 = Layer_Dense(3, 3)
 # activation2 = Activation_Softmax()

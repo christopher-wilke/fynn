@@ -1,10 +1,7 @@
-use std::sync::RwLockWriteGuard;
 use std::{fmt::Debug, usize};
-
 use crate::fynn_bias::FynnBias;
 use crate::Point;
 use rand::prelude::*;
-use rand_distr::StandardNormal;
 use rand_distr::{Distribution, Normal};
 
 #[derive(Clone)]
@@ -178,9 +175,17 @@ impl std::ops::Add<&FynnBias> for FynnArray {
 
 impl Debug for FynnArray {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut out = String::new();
-        for val in &self.matrix {
-            out.push_str(format!("{:?}\n", val).as_str());
+            let mut out = String::from("");
+            for row in &self.matrix {
+                out.push_str("[ ");
+                for val in row {
+                    if val < &0_f64 {
+                        out.push_str(&(format!("{:.5} ", val)));
+                    } else {
+                        out.push_str(&(format!("{:.6} ", val)));
+                    }
+                }
+            out.push_str("]\n");
         }
         write!(f, "\n{}", out)
     }
