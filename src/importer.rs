@@ -21,14 +21,12 @@ pub struct Importer {
 
 impl Importer {
     pub fn from_files(input: &str, y_true: &str) -> (FynnArray, Vec<u32>) {
-        log::trace!("Input: {input}, y_true: {y_true}");
-
-        // Input X
+        // Input
         let f_input = File::open(input).expect("could not open file");
         let reader = io::BufReader::new(f_input);
         let x = Self::get_x(reader.lines());
 
-        // Input Y
+        // y_true
         let f_y_true = File::open(y_true).expect("could not open file");
         let reader = io::BufReader::new(f_y_true);
         let y = Self::get_y(reader.lines());

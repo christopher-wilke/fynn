@@ -82,7 +82,7 @@ class Loss_Categorical_Crossentropy(Loss):
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
 
-X, y = vertical_data(samples=100, classes=3)
+X, y = spiral_data(samples=100, classes=3)
 
 np.savetxt('out.txt', X)
 np.savetxt('out_Y.txt', y)

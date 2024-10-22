@@ -32,7 +32,7 @@ pub fn main() {
     for i in 0..1000 {
         dense1.weights += 0.5*FynnArray::randn(2, 3);
         dense1.biases += MathHelpers::rand_biases(3);
-        dense2.weights += 0.05*FynnArray::randn(3, 3);
+        dense2.weights += 0.5*FynnArray::randn(3, 3);
         dense2.biases += MathHelpers::rand_biases(3);
 
         let fa_1 = dense1.fwd(&input);
@@ -40,7 +40,7 @@ pub fn main() {
         let fa_2 = dense2.fwd(&activation1);
         let mut activation2 = ActivationSoftmax::forward(&fa_2);
 
-        let loss = LossCategoricalCrossentropy::calculate(&mut activation2, y_true.clone());
+        let loss = LossCategoricalCrossentropy::calculate(&mut activation2, y_true.clone()); 
         let predictions = MathHelpers::argmax(activation2.clone());
         let accuracy = MathHelpers::mean(&predictions, &y_true);
 
