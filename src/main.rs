@@ -29,7 +29,7 @@ pub fn main() {
     let mut best_dense2_weights = dense2.weights.clone();
     let mut best_dense2_biases = dense2.biases.clone();
 
-    for i in 0..1000 {
+    for i in 0..1 {
         dense1.weights += 0.5*FynnArray::randn(2, 3);
         dense1.biases += MathHelpers::rand_biases(3);
         dense2.weights += 0.5*FynnArray::randn(3, 3);
