@@ -42,15 +42,11 @@ pub fn main() {
 
     // Backpropagation
     let drelu = relu_outputs.clone();
-
     let dinputs = MathHelpers::dot(&drelu, &weights.transpose());
     let dweights = MathHelpers::dot(&inputs.transpose(), &drelu);
-
+    
     let dbiases = MathHelpers::sum(&drelu.matrix);
-    log::info!("{:?}", drelu);
     log::info!("{:?}", dbiases);
-
-    // MathHelpers::dot(&inputs, &(self.weights)) + &self.biases
 
     // let (input, y_true) = Importer::from_files("py/out.txt", "py/out_Y.txt");
     

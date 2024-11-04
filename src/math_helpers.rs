@@ -85,14 +85,14 @@ impl MathHelpers {
     }
 
     // keepdimis=True, axis=1
-    pub fn sum(input: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
-        input
-            .iter()
-            .map(|row| {
-                let sum = row.iter().sum::<f64>();
-                vec![sum]
-            })
-            .collect()
+    pub fn sum(input: &Vec<Vec<f64>>) -> Vec<f64> {
+        let mut res = vec![0.; input[0].len()];
+        for v in input.iter() {
+            for (t, &z) in v.iter().enumerate() {
+                res[t] += z;
+            }
+        }
+        res
     }
 
     // keepdims = True, axis=1

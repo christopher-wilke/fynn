@@ -45,7 +45,7 @@ print(dbiases)
 
 # # update params
 # weights += -0.001*dweights
-biases += -0.001*dbiases
+# biases += -0.001*dbiases
 
 # print(weights)
 # print(biases)
