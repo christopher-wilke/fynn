@@ -40,12 +40,10 @@ dinputs = np.dot(drelu, weights.T)
 dweights = np.dot(inputs.T, drelu)
 # dbiases - sum values, keepdims
 dbiases = np.sum(drelu, axis=0, keepdims=True)
-print(drelu)
-print(dbiases)
 
-# # update params
-# weights += -0.001*dweights
-# biases += -0.001*dbiases
+# update params
+weights += -0.001*dweights
+biases += -0.001*dbiases
 
-# print(weights)
-# print(biases)
+print(weights)
+print(biases)

@@ -10,3 +10,17 @@ impl std::ops::AddAssign for FynnBias {
         }
     }
 }
+
+// Math Overloads for `FynnBias`
+impl std::ops::Mul<FynnBias> for f64 {
+    type Output = FynnBias;
+
+    fn mul(self, rhs: FynnBias) -> Self::Output {
+        let val = rhs.val
+            .iter()
+            .map(|i| i * self)
+            .collect::<Vec<f64>>();
+
+        FynnBias { val }
+    }
+}

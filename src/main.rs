@@ -23,30 +23,34 @@ pub fn main() {
         vec![3., 3., 3.]
     ]};
 
-    let inputs= FynnArray { matrix: vec![
+    let mut inputs= FynnArray { matrix: vec![
         vec![1., 2., 3., 2.5],
         vec![2., 5., -1., 2.],
         vec![-1.5, 2.7, 3.3, -0.8]
     ]};
 
-    let weights = FynnArray { matrix: vec![
+    let mut weights = FynnArray { matrix: vec![
         vec![0.2, 0.8, -0.5, 1.],
         vec![0.5, -0.91, 0.26, -0.5],
         vec![-0.26, -0.27, 0.17, 0.87]  
     ]}.transpose();
 
-    let biases = FynnBias { val: vec![2., 3., 0.5] };
+    let mut biases = FynnBias { val: vec![2., 3., 0.5] };
 
     let layer_outputs = MathHelpers::dot(&inputs, &weights) + &biases;
     let relu_outputs = ActivationReLU::forward(&layer_outputs);
 
     // Backpropagation
     let drelu = relu_outputs.clone();
-    let dinputs = MathHelpers::dot(&drelu, &weights.transpose());
+    let dinputs = MathHelpers::dot(&drelu, &weights.clone().transpose());
     let dweights = MathHelpers::dot(&inputs.transpose(), &drelu);
-    
-    let dbiases = MathHelpers::sum(&drelu.matrix);
-    log::info!("{:?}", dbiases);
+
+    // We should not use separate structs for FynnBias and FynnArray
+    let dbiases = FynnBias { val: MathHelpers::sum(&drelu.matrix) };
+
+    weights += -0.001*dweights;
+    biases += -0.001*dbiases;
+    log::info!("{:?}", biases);
 
     // let (input, y_true) = Importer::from_files("py/out.txt", "py/out_Y.txt");
     
