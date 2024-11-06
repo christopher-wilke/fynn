@@ -17,40 +17,46 @@ pub fn main() {
     env_logger::init();
 
     // Passed-in gradients from the next layer
-    let dvalues = FynnArray { matrix: vec![
+    let mut dvalues = FynnArray { matrix: vec![
         vec![1., 1., 1.],
-        vec![2., 2., 2.],
-        vec![3., 3., 3.]
+        vec![2., -2., 2.],
+        vec![3., 3., -3.]
     ]};
 
-    let mut inputs= FynnArray { matrix: vec![
-        vec![1., 2., 3., 2.5],
-        vec![2., 5., -1., 2.],
-        vec![-1.5, 2.7, 3.3, -0.8]
-    ]};
+    log::info!("{:?}", dvalues);
 
-    let mut weights = FynnArray { matrix: vec![
-        vec![0.2, 0.8, -0.5, 1.],
-        vec![0.5, -0.91, 0.26, -0.5],
-        vec![-0.26, -0.27, 0.17, 0.87]  
-    ]}.transpose();
+    let act = ActivationReLU::bwd(&dvalues);
 
-    let mut biases = FynnBias { val: vec![2., 3., 0.5] };
+    log::info!("{:?}", act);
 
-    let layer_outputs = MathHelpers::dot(&inputs, &weights) + &biases;
-    let relu_outputs = ActivationReLU::forward(&layer_outputs);
+    // let mut inputs= FynnArray { matrix: vec![
+    //     vec![1., 2., 3., 2.5],
+    //     vec![2., 5., -1., 2.],
+    //     vec![-1.5, 2.7, 3.3, -0.8]
+    // ]};
 
-    // Backpropagation
-    let drelu = relu_outputs.clone();
-    let dinputs = MathHelpers::dot(&drelu, &weights.clone().transpose());
-    let dweights = MathHelpers::dot(&inputs.transpose(), &drelu);
+    // let mut weights = FynnArray { matrix: vec![
+    //     vec![0.2, 0.8, -0.5, 1.],
+    //     vec![0.5, -0.91, 0.26, -0.5],
+    //     vec![-0.26, -0.27, 0.17, 0.87]  
+    // ]}.transpose();
 
-    // We should not use separate structs for FynnBias and FynnArray
-    let dbiases = FynnBias { val: MathHelpers::sum(&drelu.matrix) };
+    // let mut biases = FynnBias { val: vec![2., 3., 0.5] };
+    // let layer_outputs = MathHelpers::dot(&inputs, &weights) + &biases;
+    // let relu_outputs = ActivationReLU::forward(&layer_outputs);
 
-    weights += -0.001*dweights;
-    biases += -0.001*dbiases;
-    log::info!("{:?}", biases);
+    // // Backpropagation
+    // let drelu = relu_outputs.clone();
+    // let dinputs = MathHelpers::dot(&drelu, &weights.clone().transpose());
+    // let dweights = MathHelpers::dot(&inputs.transpose(), &drelu);
+
+    // // We should not use separate structs for FynnBias and FynnArray
+    // let dbiases = FynnBias { val: MathHelpers::sum(&drelu.matrix) };
+
+    // weights += -0.001*dweights;
+    // biases += -0.001*dbiases;
+    // log::info!("{:?}", weights);
+    // log::info!("{:?}", biases);
 
     // let (input, y_true) = Importer::from_files("py/out.txt", "py/out_Y.txt");
     

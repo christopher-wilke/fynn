@@ -4,12 +4,10 @@ use crate::MathHelpers;
 pub struct LossCategoricalCrossentropy;
 
 impl Loss for LossCategoricalCrossentropy {
+    
     fn calculate(y_pred: &mut FynnArray, y_true: Vec<u32>) -> f64 {
-
-        log::info!("loss calculation");
         
         let y_pred_clipped = MathHelpers::clip(y_pred, 0.0000001, 0.9999999);
-        log::info!("y_pred_clipped: {:?}", y_pred_clipped);
 
         let correct_confidence: Vec<f64> = y_pred_clipped
             .iter()
